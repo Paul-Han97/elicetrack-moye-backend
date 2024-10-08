@@ -1,22 +1,23 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from 'express';
+import { statusMessage } from '../utils/message.util';
 
-const messageMap: { [key: number]: string } = {
-  // Successful responses
-  200: "OK",
-  201: "Created",
-  202: "Accepted",
-  204: "No Content",
+const messageMap = new Map<string, number>();
 
-  // Client error responses
-  400: "Bad Request",
-  401: "Unauthorized",
-  403: "Forbidden",
-  404: "Not Found",
+// Successful responses
+messageMap.set(statusMessage.OK, 200);
+messageMap.set(statusMessage.CREATED, 201);
+messageMap.set(statusMessage.ACCEPTED, 202);
+messageMap.set(statusMessage.NO_CONTENT, 204);
 
-  // Server error responses
-  500: "Internal Server Error",
-  505: "HTTP Version Not Supported",
-};
+// Client error responses
+messageMap.set(statusMessage.BAD_REQUEST, 400);
+messageMap.set(statusMessage.UNAUTHORIZED, 401);
+messageMap.set(statusMessage.FORBIDDEN, 403);
+messageMap.set(statusMessage.NOT_FOUND, 404);
+
+// Server error responses
+messageMap.set(statusMessage.INTERNAL_SERVER_ERROR, 500);
+messageMap.set(statusMessage.HTTP_VERSION_NOT_SUPPORTED, 505);
 
 export function errorHandler(
   e: Error,
@@ -24,23 +25,17 @@ export function errorHandler(
   res: Response,
   next: NextFunction
 ) {
-  if (e.name !== "Error") {
-    res.status(500);
-  }
-
-  const statusCode = res.statusCode;
+  const [statusMsg, errorMsg] = e.message.split('+');
+  const statusCode = messageMap.get(statusMsg) || 500;
 
   if (statusCode === 500) {
     console.log(e.stack);
   }
 
-  const statusMessage = messageMap[statusCode];
-  const errorMessage = e.message;
-
   const status = {
     status_code: statusCode,
-    message: `${statusMessage} ${errorMessage}`,
+    message: `${statusMsg} ${errorMsg}`,
   };
 
-  return res.send(status);
+  return res.status(statusCode).send(status);
 }
