@@ -37,5 +37,5 @@ export function errorHandler(
     message: `${statusMsg} ${errorMsg}`,
   };
 
-  return res.status(statusCode).send(status);
+  res.status(statusCode).send(status);
 }
