@@ -7,7 +7,8 @@ export const AppDataSource = new DataSource({
   port: Number(config.database.port),
   username: config.database.username,
   password: config.database.password,
-  entities: ['src/entities/*'],
+  database: config.database.name,
+  entities: ['**/entities/*.entity.js'],
   logging: true,
   synchronize: true,
 });
