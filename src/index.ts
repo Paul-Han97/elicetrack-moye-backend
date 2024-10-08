@@ -1,9 +1,16 @@
 import "dotenv/config";
-import app from "./app";
-import "./config/db";
+import cors from "cors";
+import config from "./config";
+import express from "express";
 
-const PORT = process.env.PORT || 8080;
+const PORT = config.server.port;
+const app = express();
 
-app.listen(PORT, () => {
-  console.log(`server listening on ${PORT}`);
-});
+app.use(
+  cors({
+    origin: "*",
+  })
+);
+
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
