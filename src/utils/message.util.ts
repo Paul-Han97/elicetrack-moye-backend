@@ -13,4 +13,5 @@ export const statusMessage = {
 
 export const serverMessage = {
   E001: '올바른 요청이 아닙니다.',
+  E002: '유효한 인증이 아닙니다.'
 };
