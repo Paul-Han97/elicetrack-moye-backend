@@ -1,7 +1,9 @@
 import { AppDataSource } from '../db/datasource';
 import { CredentialType } from '../entities/credential-type.entity';
 import { Credential } from '../entities/credential.entity';
+import { Reservation } from '../entities/reservation.entity';
 import { Role } from '../entities/role.entity';
+import { Store } from '../entities/store.entity';
 import { UserCredential } from '../entities/user-credential.entity';
 import { User } from '../entities/user.entity';
 import { serverMessage, statusMessage } from '../utils/message.util';
@@ -9,7 +11,7 @@ import { serverMessage, statusMessage } from '../utils/message.util';
 const repository = AppDataSource.getRepository(User);
 
 class UserRepository {
-  async findOneByEmail(email: string) {
+  async findByEmail(email: string) {
     return await repository.findOne({
       where: {
         email,
@@ -23,6 +25,8 @@ class UserRepository {
         .leftJoinAndMapOne('A.userCredential', UserCredential, 'B', 'A.id = B.user_id')
         .leftJoinAndMapOne('B.credential', Credential, 'C', 'B.credential_id = C.id')
         .leftJoinAndMapOne('C.role', Role, 'D', 'C.role_id = D.id')
+        .leftJoinAndMapMany('A.store', Store, 'E', 'A.id = E.user_id')
+        .leftJoinAndMapMany('A.reservation', Reservation, 'F', 'A.id = F.user_id')
         .where('A.id = :id', { id })
         .getOne();
 
@@ -35,7 +39,9 @@ class UserRepository {
         email: sql.email,
         name: sql.name,
         phone: sql.phone,
-        role: sql.userCredential.credential.role
+        role: sql.userCredential.credential.role.type,
+        stores: sql.store,
+        reservations: sql.reservation
     };
 
     return result;
