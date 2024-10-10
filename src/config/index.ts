@@ -9,4 +9,7 @@ export default {
     password: process.env.DATABASE_PASSWORD,
     name: process.env.DATABASE_NAME,
   },
+  jwt: {
+    key: process.env.JWT_KEY,
+  },
 };
