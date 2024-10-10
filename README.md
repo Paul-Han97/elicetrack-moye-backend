@@ -16,3 +16,26 @@
   throw new Error(`${statusMessage.BAD_REQUEST}+${serverMessage.E001}`);
 };
 ```
+
+# API 명세서
+## `HOST localhost:5000`
+<hr>
+
+### 로그인
+#### `POST /login`
+- **request**
+```json
+{
+  "username": "ph@elice.com",
+  "password": "elice"
+}
+```
+
+- **response**
+```json
+"body": {
+  "access": "eyJ...rWIzo",
+  "refresh": "eyJ...XmNI4"
+}
+```
+<hr>
