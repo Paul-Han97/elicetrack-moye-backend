@@ -1,16 +1,6 @@
 import jwt from 'jsonwebtoken';
 import config from '../config';
-
-interface IGenerate {
-  type: string;
-  id: number;
-  role: string;
-}
-
-interface IVerify {
-  type: string;
-  authorization: string;
-}
+import { IGenerate, IVerify } from '../interface/token.interface';
 
 export class Token {
   static #key = config.jwt.key;
