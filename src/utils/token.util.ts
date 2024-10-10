@@ -21,7 +21,7 @@ export class Token {
       payload.jti = this.REFRESH;
     }
 
-    return payload;
+    return jwt.sign(payload, this.#key!);
   }
 
   static #decode(token: string) {
