@@ -21,6 +21,17 @@
 ## `HOST localhost:5000`
 <hr>
 
+### Email로 검색
+#### `GET /users?email="ph@elice.com`
+- **response**
+```json
+"body": {
+  "id": 1,
+  "name": "엘리스",
+  "phone": "01012341234"
+}
+```
+
 ### 로그인
 #### `POST /login`
 - **request**
