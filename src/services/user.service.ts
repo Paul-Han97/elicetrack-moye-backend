@@ -5,6 +5,10 @@ import { serverMessage, statusMessage } from '../utils/message.util';
 import { Token } from '../utils/token.util';
 
 class UserService {
+  async findByEmail(email:string) {
+    return await userRepository.findByEmail(email);
+  }
+
   async findByIdWithRole(id: number) {
     return await userRepository.findByIdWithRole(id);
   }
@@ -13,7 +17,6 @@ class UserService {
     const user = await userRepository.loadUserByUsername(username);
 
     const isMatches = Encrypt.matches(password, user.password);
-    console.log('isMatches', isMatches);
 
     if (!isMatches) {
       const msg = `${statusMessage.NOT_FOUND}+${serverMessage.E004}`;
