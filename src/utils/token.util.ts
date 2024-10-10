@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import config from '../config';
-import { IGenerate, IVerify } from '../interface/token.interface';
+import { IGenerate, IDecodeJwt, IVerify } from '../interface/token.interface';
+import { serverMessage, statusMessage } from './message.util';
 
 export class Token {
   static #key = config.jwt.key;
@@ -36,15 +37,17 @@ export class Token {
     return decoded;
   }
 
-  static verify({ type, authorization }: IVerify) {
+  static verify({ type, authorization }: IVerify):IDecodeJwt {
     if (!authorization) {
-      return false;
+      const msg = `${statusMessage.UNAUTHORIZED}+${serverMessage.E002}`
+      throw new Error(msg)
     }
 
     const [tokenType, credential] = authorization.split(' ');
 
     if (tokenType !== Token.BEARER) {
-      return false;
+      const msg = `${statusMessage.UNAUTHORIZED}+${serverMessage.E002}`
+      throw new Error(msg)
     }
 
     const decoded = this.#decode(credential);
@@ -56,7 +59,8 @@ export class Token {
                  && decoded.role;
 
     if (!isValid) {
-      return false;
+      const msg = `${statusMessage.UNAUTHORIZED}+${serverMessage.E002}`
+      throw new Error(msg)
     }
 
     return decoded;
