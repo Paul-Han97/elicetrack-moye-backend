@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { UserCredential } from './user-credential.entity';
 import { Role } from './role.entity';
+import { CredentialType } from './credential-type.entity';
 
 @Entity()
 export class Credential {
@@ -18,8 +19,9 @@ export class Credential {
   @JoinColumn({ name: 'role_id', foreignKeyConstraintName: 'fk_credential_role' })
   role: Role;
 
-  @Column('varchar', { length: 10 })
-  type: string;
+  @ManyToOne(() => CredentialType, (credentialType) => credentialType.credential)
+  @JoinColumn({ name: 'credential_type_id', foreignKeyConstraintName: 'fk_credential_credentialType' })
+  credentialType: CredentialType;
 
   @Column('varchar')
   password: string;
