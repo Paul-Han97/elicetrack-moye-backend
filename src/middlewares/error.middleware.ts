@@ -34,7 +34,8 @@ export function errorHandler(
 
   const status = {
     status_code: statusCode,
-    message: `${statusMsg} ${errorMsg}`,
+    error: statusMsg,
+    message: errorMsg,
   };
 
   res.status(statusCode).send(status);

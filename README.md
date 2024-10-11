@@ -18,12 +18,17 @@
 ```
 
 # API 명세서
+
 ## `HOST localhost:5000`
+
 <hr>
 
 ### Email로 검색
-#### `GET /users?email="ph@elice.com`
+
+#### `GET /users?email="ph@elice.com"`
+
 - **response**
+
 ```json
 "body": {
   "id": 1,
@@ -32,9 +37,14 @@
 }
 ```
 
+<hr>
+
 ### 로그인
+
 #### `POST /login`
+
 - **request**
+
 ```json
 {
   "username": "ph@elice.com",
@@ -43,10 +53,35 @@
 ```
 
 - **response**
+
 ```json
 "body": {
   "access": "eyJ...rWIzo",
   "refresh": "eyJ...XmNI4"
 }
 ```
+
+### 회원가입
+
+#### `POST /users`
+
+- **request**
+
+```json
+{
+  "email": "abc@elice.com",
+  "name": "testName",
+  "phone": "01012341234",
+  "password": "root"
+}
+```
+
+- **response**
+
+```json
+{
+  "body": "회원가입이 완료 되었습니다."
+}
+```
+
 <hr>
