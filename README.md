@@ -21,8 +21,6 @@
 
 ## `HOST localhost:5000`
 
-<hr>
-
 ### Email로 검색
 
 #### `GET /users?email="ph@elice.com"`
@@ -30,14 +28,14 @@
 - **response**
 
 ```json
-"body": {
-  "id": 1,
-  "name": "엘리스",
-  "phone": "01012341234"
+{
+  "body": {
+    "id": 1,
+    "name": "엘리스",
+    "phone": "01012341234"
+  }
 }
 ```
-
-<hr>
 
 ### 로그인
 
@@ -55,9 +53,11 @@
 - **response**
 
 ```json
-"body": {
-  "access": "eyJ...rWIzo",
-  "refresh": "eyJ...XmNI4"
+{
+  "body": {
+    "access": "eyJ...rWIzo",
+    "refresh": "eyJ...XmNI4"
+  }
 }
 ```
 
@@ -83,5 +83,3 @@
   "body": "회원가입이 완료 되었습니다."
 }
 ```
-
-<hr>
