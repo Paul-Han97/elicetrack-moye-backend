@@ -24,6 +24,9 @@ export class Store {
   @Column('varchar', { name: 'business_registeration_number', length: 13 })
   businessRegistrationNumber: string;
 
+  @Column('varchar', { name: 'business_name' })
+  businessName: string;
+
   @Column('varchar')
   name: string;
 
