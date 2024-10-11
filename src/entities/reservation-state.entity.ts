@@ -11,7 +11,7 @@ export class ReservationState {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column('varchar', { length: 6 })
+  @Column('varchar', { length: 7 })
   type: string;
 
   @OneToMany(() => Reservation, (reservation) => reservation.reservationState)
