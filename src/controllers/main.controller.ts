@@ -6,9 +6,9 @@ import { Token } from '../utils/token.util';
 class MainController {
   async login(req: any, res: Response, next: NextFunction) {
     try {
-      const { username, password } = req.body;
+      const { email, password } = req.body;
 
-      const result = await userService.loadUserByUsername(username, password);
+      const result = await userService.loadUserByEmail(email, password);
 
       res.status(200).send({ body: result });
     } catch (e) {
