@@ -47,14 +47,14 @@ class UserRepository {
     return result;
   }
 
-  async loadUserByUsername(username:string) {
+  async loadUserByEmail(email:string) {
     const sql = await repository
         .createQueryBuilder('A')
         .leftJoinAndMapOne('A.userCredential', UserCredential, 'B', 'A.id = B.user_id')
         .leftJoinAndMapOne('B.credential', Credential, 'C', 'B.credential_id = C.id')
         .leftJoinAndMapOne('C.credentialType', CredentialType, 'D', 'C.credential_type_id = D.id')
         .leftJoinAndMapOne('C.role', Role, 'E', 'C.role_id = E.id')
-        .where ('A.email = :username', { username })
+        .where ('A.email = :email', { email })
         .getOne();
 
     if(!sql) {

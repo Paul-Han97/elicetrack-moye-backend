@@ -13,8 +13,8 @@ class UserService {
     return await userRepository.findByIdWithRole(id);
   }
 
-  async loadUserByUsername(username: string, password: string) {
-    const user = await userRepository.loadUserByUsername(username);
+  async loadUserByEmail(email: string, password: string) {
+    const user = await userRepository.loadUserByEmail(email);
 
     const isMatches = Encrypt.matches(password, user.password);
 
