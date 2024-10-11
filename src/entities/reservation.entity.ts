@@ -41,6 +41,9 @@ export class Reservation {
   @Column('varchar')
   description: string;
 
-  @Column('time')
-  time: Date;
+  @Column('datetime', { name: 'start_time' })
+  startTime: Date;
+
+  @Column('datetime', { name: 'end_time' })
+  endTime: Date;
 }
