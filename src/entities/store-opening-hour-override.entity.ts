@@ -22,9 +22,9 @@ export class StoreOpeningHourOverride {
   @Column('boolean', { name: 'is_closed' })
   isClosed: boolean;
 
-  @Column('datetime', { name: 'open_from' })
+  @Column('datetime', { name: 'open_from', nullable: true })
   openFrom: Date;
 
-  @Column('datetime', { name: 'close_to' })
+  @Column('datetime', { name: 'close_to', nullable: true })
   closeTo: Date;
 }

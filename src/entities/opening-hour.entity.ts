@@ -22,9 +22,9 @@ export class OpeningHour {
   })
   storeDefaultOpeningHour: StoreDefaultOpeningHour;
 
-  @Column('time', { name: 'open_from' })
+  @Column('time', { name: 'open_from', nullable: true })
   openFrom: Date;
 
-  @Column('time', { name: 'close_to' })
+  @Column('time', { name: 'close_to', nullable: true })
   closeTo: Date;
 }
