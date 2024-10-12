@@ -1,16 +1,9 @@
-import {
-  Column,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Common } from './common.abstract';
 import { ImageStore } from './image-store.entity';
 
 @Entity()
-export class Image {
-  @PrimaryGeneratedColumn('increment')
-  id: number;
-
+export class Image extends Common {
   @Column('varchar')
   src: string;
 

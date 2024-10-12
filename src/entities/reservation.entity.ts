@@ -1,19 +1,11 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Common } from './common.abstract';
 import { ReservationState } from './reservation-state.entity';
 import { Store } from './store.entity';
 import { User } from './user.entity';
 
 @Entity()
-export class Reservation {
-  @PrimaryGeneratedColumn('increment')
-  id: number;
-
+export class Reservation extends Common {
   @ManyToOne(() => User, (user) => user.reservation)
   @JoinColumn({
     name: 'user_id',

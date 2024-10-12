@@ -1,11 +1,9 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
+import { Common } from './common.abstract';
 import { Credential } from './credential.entity';
 
 @Entity()
-export class CredentialType {
-  @PrimaryGeneratedColumn('increment')
-  id: number;
-
+export class CredentialType extends Common {
   @Column('varchar', { length: 10 })
   type: string;
 

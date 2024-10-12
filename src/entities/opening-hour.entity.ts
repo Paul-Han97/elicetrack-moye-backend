@@ -1,17 +1,9 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Common } from './common.abstract';
 import { StoreDefaultOpeningHour } from './store-default-opening-hour.entity';
 
 @Entity()
-export class OpeningHour {
-  @PrimaryGeneratedColumn('increment')
-  id: number;
-
+export class OpeningHour extends Common {
   @ManyToOne(
     () => StoreDefaultOpeningHour,
     (storeDefaultOpeningHour) => storeDefaultOpeningHour.openingHour

@@ -1,20 +1,18 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
+import { Common } from './common.abstract';
 import { Reservation } from './reservation.entity';
 import { Store } from './store.entity';
 import { UserCredential } from './user-credential.entity';
 
 @Entity()
-export class User {
-  @PrimaryGeneratedColumn('increment')
-  id: number;
-
+export class User extends Common {
   @Column('varchar')
   email: string;
 
   @Column('varchar')
   name: string;
 
-  @Column('varchar', {length: 20})
+  @Column('varchar', { length: 20 })
   phone: string;
 
   @OneToMany(() => Reservation, (reservation) => reservation.user)
