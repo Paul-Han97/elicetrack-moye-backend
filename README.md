@@ -83,3 +83,31 @@
   "body": "회원가입이 완료 되었습니다."
 }
 ```
+
+### 한 달 예약 조회
+
+#### `GET /reservations/:storeId/stores?month=10`
+
+- **response**
+
+```json
+{
+  "body": {
+    "2024-10-14": {
+      "ACCEPT": 0,
+      "PENDING": 0,
+      "CANCEL": 1
+    },
+    "2024-10-25": {
+      "ACCEPT": 1,
+      "PENDING": 0,
+      "CANCEL": 0
+    },
+    "2024-10-28": {
+      "ACCEPT": 1,
+      "PENDING": 2,
+      "CANCEL": 1
+    }
+  }
+}
+```
