@@ -21,7 +21,7 @@ export class Store {
   @JoinColumn({ name: 'user_id', foreignKeyConstraintName: 'fk_store_user' })
   user: User;
 
-  @Column('varchar', { name: 'business_registeration_number', length: 13 })
+  @Column('varchar', { name: 'business_registration_number', length: 13 })
   businessRegistrationNumber: string;
 
   @Column('varchar', { name: 'business_name' })
