@@ -1,4 +1,4 @@
-export interface IFindByStoreIdGroupByDate {
+export interface IFindMonthlyReservationByStoreId {
     storeId : number;
     month : number;
 }

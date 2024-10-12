@@ -33,6 +33,9 @@ export class Reservation extends Common {
   @Column('varchar')
   description: string;
 
+  @Column('int')
+  count: number;
+
   @Column('datetime', { name: 'start_time' })
   startTime: Date;
 
