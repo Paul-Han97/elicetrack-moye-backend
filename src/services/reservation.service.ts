@@ -1,10 +1,10 @@
 import { RESERVATION_TYPE } from '../constants';
-import { IFindByStoreIdGroupByDate } from '../interface/reservation.interface';
+import { IFindMonthlyReservationByStoreId } from '../interface/reservation.interface';
 import { reservationRepository } from '../repositories/reservation.repository';
 
 class ReservationService {
-  async findByStoreIdGroupByDate({ storeId, month } : IFindByStoreIdGroupByDate) {
-    const results = await reservationRepository.findByStoreIdGroupByDate({ storeId, month });
+  async findMonthlyReservationByStoreId({ storeId, month } : IFindMonthlyReservationByStoreId) {
+    const results = await reservationRepository.findMonthlyReservationByStoreId({ storeId, month });
     const resultMap = new Map();
 
     for (const { ymd, type, count } of results) {
@@ -30,6 +30,10 @@ class ReservationService {
     }
 
     return Object.fromEntries(resultMap);
+  }
+
+  async findTodayReservationByStoreId(storeId: number) {
+    return await reservationRepository.findTodayReservationByStoreId(storeId);
   }
 }
 

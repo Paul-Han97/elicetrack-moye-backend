@@ -111,3 +111,48 @@
   }
 }
 ```
+
+### 하루 예약 조회
+
+#### `GET /reservations/:storeId/stores`
+
+- **response**
+
+```json
+{
+  "body": [
+    {
+      "name": "엘리스",
+      "count": 2,
+      "startTime": "10:00",
+      "endTime": "11:59",
+      "phone": "01091912929",
+      "status": "CANCEL"
+    },
+    {
+      "name": "예약자1",
+      "count": 2,
+      "startTime": "13:00",
+      "endTime": "15:59",
+      "phone": "01033334444",
+      "status": "PENDING"
+    },
+    {
+      "name": "예약자2",
+      "count": 2,
+      "startTime": "16:00",
+      "endTime": "17:59",
+      "phone": "01033334444",
+      "status": "ACCEPT"
+    },
+    {
+      "name": "예약자3",
+      "count": 4,
+      "startTime": "18:00",
+      "endTime": "18:59",
+      "phone": "01033334444",
+      "status": "ACCEPT"
+    }
+  ]
+}
+```
