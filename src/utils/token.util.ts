@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import config from '../config';
-import { IGenerate, IDecodeJwt, IVerify } from '../interface/token.interface';
+import { IGenerate, IDecodeJwt, IVerify } from '../interfaces/token.interface';
 import { serverMessage, statusMessage } from './message.util';
 
 export class Token {

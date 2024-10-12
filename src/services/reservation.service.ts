@@ -1,5 +1,5 @@
 import { RESERVATION_TYPE } from '../constants';
-import { IFindByStoreIdGroupByDate } from '../interface/reservation.interface';
+import { IFindByStoreIdGroupByDate } from '../interfaces/reservation.interface';
 import { reservationRepository } from '../repositories/reservation.repository';
 
 class ReservationService {

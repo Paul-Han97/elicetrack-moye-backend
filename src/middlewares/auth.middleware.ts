@@ -1,5 +1,5 @@
 import { NextFunction, Response } from 'express';
-import { IVerify } from '../interface/token.interface';
+import { IVerify } from '../interfaces/token.interface';
 import { serverMessage, statusMessage } from '../utils/message.util';
 import { Token } from '../utils/token.util';
 

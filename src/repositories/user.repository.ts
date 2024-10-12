@@ -6,7 +6,7 @@ import { Role } from '../entities/role.entity';
 import { Store } from '../entities/store.entity';
 import { UserCredential } from '../entities/user-credential.entity';
 import { User } from '../entities/user.entity';
-import { ISignup } from '../interface/user.interface';
+import { ISignup } from '../interfaces/user.interface';
 import { serverMessage, statusMessage } from '../utils/message.util';
 
 const repository = AppDataSource.getRepository(User);

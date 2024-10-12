@@ -1,6 +1,6 @@
 import { AppDataSource } from '../db/datasource';
 import { Reservation } from '../entities/reservation.entity';
-import { IFindByStoreIdGroupByDate } from '../interface/reservation.interface';
+import { IFindByStoreIdGroupByDate } from '../interfaces/reservation.interface';
 import { reservationQuery } from '../utils/sql-query.util';
 
 const repository = AppDataSource.getRepository(Reservation);

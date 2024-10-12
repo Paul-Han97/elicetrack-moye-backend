@@ -1,5 +1,5 @@
 import { NextFunction, Response } from 'express';
-import { IGenerate, IVerify } from '../interface/token.interface';
+import { IGenerate, IVerify } from '../interfaces/token.interface';
 import { userService } from '../services/user.service';
 import { Token } from '../utils/token.util';
 

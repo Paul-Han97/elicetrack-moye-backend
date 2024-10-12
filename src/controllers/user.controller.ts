@@ -1,6 +1,6 @@
 import { NextFunction, Response } from 'express';
 import { userService } from '../services/user.service';
-import { IUser } from '../interface/user.interface';
+import { IUser } from '../interfaces/user.interface';
 
 class UserController {
   async findByEmail(req: any, res: Response, next: NextFunction) {
