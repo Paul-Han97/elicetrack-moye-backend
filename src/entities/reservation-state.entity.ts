@@ -1,16 +1,9 @@
-import {
-    Column,
-    Entity,
-    OneToMany,
-    PrimaryGeneratedColumn
-} from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
+import { Common } from './common.abstract';
 import { Reservation } from './reservation.entity';
 
 @Entity()
-export class ReservationState {
-  @PrimaryGeneratedColumn('increment')
-  id: number;
-
+export class ReservationState extends Common {
   @Column('varchar', { length: 7 })
   type: string;
 

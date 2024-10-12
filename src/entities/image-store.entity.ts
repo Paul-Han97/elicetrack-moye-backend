@@ -1,18 +1,10 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Common } from './common.abstract';
 import { Image } from './image.entity';
 import { Store } from './store.entity';
 
 @Entity()
-export class ImageStore {
-  @PrimaryGeneratedColumn('increment')
-  id: number;
-
+export class ImageStore extends Common {
   @ManyToOne(() => Image, (image) => image.imageStore)
   @JoinColumn({
     name: 'image_id',

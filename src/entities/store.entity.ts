@@ -1,11 +1,5 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Common } from './common.abstract';
 import { ImageStore } from './image-store.entity';
 import { Reservation } from './reservation.entity';
 import { StoreDefaultOpeningHour } from './store-default-opening-hour.entity';
@@ -13,10 +7,7 @@ import { StoreOpeningHourOverride } from './store-opening-hour-override.entity';
 import { User } from './user.entity';
 
 @Entity()
-export class Store {
-  @PrimaryGeneratedColumn('increment')
-  id: number;
-
+export class Store extends Common {
   @ManyToOne(() => User, (user) => user.store)
   @JoinColumn({ name: 'user_id', foreignKeyConstraintName: 'fk_store_user' })
   user: User;

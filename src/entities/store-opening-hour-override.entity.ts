@@ -1,17 +1,9 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Common } from './common.abstract';
 import { Store } from './store.entity';
 
 @Entity()
-export class StoreOpeningHourOverride {
-  @PrimaryGeneratedColumn('increment')
-  id: number;
-
+export class StoreOpeningHourOverride extends Common {
   @ManyToOne(() => Store, (store) => store.storeOpeningHourOverride)
   @JoinColumn({
     name: 'store_id',

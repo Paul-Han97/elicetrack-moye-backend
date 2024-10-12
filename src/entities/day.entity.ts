@@ -1,14 +1,15 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
+import { Common } from './common.abstract';
 import { StoreDefaultOpeningHour } from './store-default-opening-hour.entity';
 
 @Entity()
-export class Day {
-  @PrimaryGeneratedColumn('increment')
-  id: number;
-
+export class Day extends Common {
   @Column('varchar', { length: 3 })
   type: string;
 
-  @OneToMany(() => StoreDefaultOpeningHour, (storeDefaultOpeningHour) => storeDefaultOpeningHour.day)
+  @OneToMany(
+    () => StoreDefaultOpeningHour,
+    (storeDefaultOpeningHour) => storeDefaultOpeningHour.day
+  )
   storeDefaultOpeningHour: StoreDefaultOpeningHour;
 }
