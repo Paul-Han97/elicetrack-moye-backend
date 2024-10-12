@@ -113,7 +113,13 @@ class UserRepository {
     const manager = queryRunner.manager;
 
     try {
-      await manager.getRepository(User).save(signupDto.user);
+      const newUser = await manager.getRepository(User).save(signupDto.user);
+      signupDto.credential.registerUser = newUser.id;
+      signupDto.credential.updateUser = newUser.id;
+
+      signupDto.userCredential.registerUser = newUser.id;
+      signupDto.userCredential.updateUser = newUser.id;
+
       await manager.getRepository(Credential).save(signupDto.credential);
       await manager.getRepository(UserCredential).save(signupDto.userCredential);
 

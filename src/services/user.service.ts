@@ -54,7 +54,7 @@ class UserService {
     const hasUser = await userRepository.findByEmail(email);
 
     if(hasUser) {
-      const msg = `${statusMessage.BAD_REQUEST}+이미 계정이 존재합니다.`;
+      const msg = `${statusMessage.BAD_REQUEST}+${serverMessage.E006}`;
       throw new Error(msg);
     }
 
