@@ -1,15 +1,19 @@
 import { AppDataSource } from '../db/datasource';
 import { Reservation } from '../entities/reservation.entity';
-import { IFindByStoreIdGroupByDate } from '../interface/reservation.interface';
+import { IFindMonthlyReservationByStoreId } from '../interface/reservation.interface';
 import { reservationQuery } from '../utils/sql-query.util';
 
 const repository = AppDataSource.getRepository(Reservation);
 
 class ReservationRepository {
-  async findByStoreIdGroupByDate({ storeId, month }: IFindByStoreIdGroupByDate){
-    console.log('storeId', storeId)
-    const sql = reservationQuery.findByStoreIdGroupByDate;
+  async findMonthlyReservationByStoreId({ storeId, month }: IFindMonthlyReservationByStoreId){
+    const sql = reservationQuery.findMonthlyReservationByStoreId;
     return await repository.query(sql, [ storeId, month ]);
+  }
+
+  async findTodayReservationByStoreId(storeId: number) {
+    const sql = reservationQuery.findTodayReservationByStoreId;
+    return await repository.query(sql, [ storeId ]);
   }
 }
 
