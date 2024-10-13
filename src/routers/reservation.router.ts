@@ -3,6 +3,6 @@ import { reservationController } from '../controllers/reservation.controller';
 
 const router = Router();
 
-router.get('/:storeId/stores', reservationController.findReservationByMonthOrToday);
+router.get('/:storeId/stores', reservationController.findByMonthOrToday);
 
 export const reservationRouter = router;

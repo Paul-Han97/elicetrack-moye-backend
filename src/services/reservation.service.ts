@@ -1,10 +1,20 @@
 import { RESERVATION_TYPE } from '../constants';
-import { IFindMonthlyReservationByStoreId } from '../interfaces/reservation.interface';
+import {
+  IFindAllUser,
+  IFindMonthlyReservationByStoreId,
+  IFindUserByName,
+  IFindUserByPhone,
+} from '../interfaces/reservation.interface';
 import { reservationRepository } from '../repositories/reservation.repository';
 
 class ReservationService {
-  async findMonthlyReservationByStoreId({ storeId, month } : IFindMonthlyReservationByStoreId) {
-    const results = await reservationRepository.findMonthlyReservationByStoreId({ storeId, month });
+  async findMonthlyReservationByStoreId({
+    storeId,
+    month,
+  }: IFindMonthlyReservationByStoreId) {
+    const results = await reservationRepository.findMonthlyReservationByStoreId(
+      { storeId, month }
+    );
     const resultMap = new Map();
 
     for (const { ymd, type, count } of results) {
@@ -34,6 +44,18 @@ class ReservationService {
 
   async findTodayReservationByStoreId(storeId: number) {
     return await reservationRepository.findTodayReservationByStoreId(storeId);
+  }
+
+  async findAllUser({ storeId, skip }: IFindAllUser) {
+    return await reservationRepository.findAllUser({ storeId, skip });
+  }
+
+  async findUserByName({ storeId, name }: IFindUserByName) {
+    return await reservationRepository.findUserByName({ storeId, name });
+  }
+
+  async findUserByPhone({ storeId, phone }: IFindUserByPhone) {
+    return await reservationRepository.findUserByPhone({ storeId, phone });
   }
 }
 
