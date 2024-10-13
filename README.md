@@ -84,37 +84,18 @@
 }
 ```
 
-### 한 달 예약 조회
-
-#### `GET /reservations/:storeId/stores?month=10`
-
-- **response**
-
-```json
-{
-  "body": {
-    "2024-10-14": {
-      "ACCEPT": 0,
-      "PENDING": 0,
-      "CANCEL": 1
-    },
-    "2024-10-25": {
-      "ACCEPT": 1,
-      "PENDING": 0,
-      "CANCEL": 0
-    },
-    "2024-10-28": {
-      "ACCEPT": 1,
-      "PENDING": 2,
-      "CANCEL": 1
-    }
-  }
-}
-```
-
 ### 하루 예약 조회
 
 #### `GET /reservations/:storeId/stores`
+
+- **request header**
+
+```json
+{
+  // authorization = {Access Token}
+  "authorization": "Bearer eyJhbGciOiJIUz...oOnz2pX1x6bb-C6A"
+}
+```
 
 - **response**
 
@@ -152,6 +133,142 @@
       "endTime": "18:59",
       "phone": "01033334444",
       "status": "ACCEPT"
+    }
+  ]
+}
+```
+
+### 한 달 예약 조회 - 검색
+
+#### `GET /reservations/storeId/stores?skip=0`
+
+- **request header**
+
+```json
+{
+  // authorization = {Access Token}
+  "authorization": "Bearer eyJhbGciOiJIUz...oOnz2pX1x6bb-C6A"
+}
+```
+
+- **response**
+
+```json
+{
+  "body": [
+    {
+      "reservationId": 4,
+      "status": "ACCEPT",
+      "name": "예약자1",
+      "phone": "01033335555",
+      "count": 2,
+      "ymd": "2024-10-13|0",
+      "startTime": "16:00",
+      "endTime": "17:59"
+    },
+    {
+      "reservationId": 5,
+      "status": "PENDING",
+      "name": "예약자2",
+      "phone": "01033337777",
+      "count": 2,
+      "ymd": "2024-10-13|0",
+      "startTime": "16:00",
+      "endTime": "17:59"
+    },
+    {
+      "reservationId": 6,
+      "status": "CANCEL",
+      "name": "예약자3",
+      "phone": "01033336666",
+      "count": 3,
+      "ymd": "2024-10-13|0",
+      "startTime": "16:00",
+      "endTime": "17:59"
+    },
+    {
+      "reservationId": 7,
+      "status": "ACCEPT",
+      "name": "예약자4",
+      "phone": "01033338888",
+      "count": 4,
+      "ymd": "2024-10-13|0",
+      "startTime": "18:00",
+      "endTime": "18:59"
+    },
+    {
+      "reservationId": 1,
+      "status": "PENDING",
+      "name": "예약자5",
+      "phone": "01011112222",
+      "count": 3,
+      "ymd": "2024-10-28|1",
+      "startTime": "10:00",
+      "endTime": "11:59"
+    }
+  ]
+}
+```
+
+### 한 달 예약 조회 - 번호 검색
+
+#### `GET /reservations/storeId/stores?search=0103333`
+
+- **request header**
+
+```json
+{
+  // authorization = {Access Token}
+  "authorization": "Bearer eyJhbGciOiJIUz...oOnz2pX1x6bb-C6A"
+}
+```
+
+- **response**
+
+```json
+{
+  "body": [
+    {
+      "resrvationId": 4,
+      "status": "ACCEPT",
+      "name": "예약자",
+      "phone": "01033334444",
+      "count": 2,
+      "ymd": "2024-10-13|0",
+      "startTime": "16:00",
+      "endTime": "17:59"
+    }
+  ]
+}
+```
+
+### 한 달 예약 조회 - 이름 검색
+
+#### `GET /reservations/1/stores?search=리스`
+
+- **request header**
+
+```json
+{
+  // authorization = {Access Token}
+  "authorization": "Bearer eyJhbGciOiJIUz...oOnz2pX1x6bb-C6A"
+}
+```
+
+- **response**
+
+```json
+{
+  "body": [
+    {
+      "resrvationId": 1,
+      "status": "PENDING",
+      "name": "엘리스",
+      "phone": "01011112222",
+      "count": 3,
+      "ymd": "2024-10-28|1",
+      "startTime": "10:00",
+      "endTime": "11:59"
     }
   ]
 }
