@@ -13,3 +13,5 @@ export const RESERVATION_TYPE = {
   PENDING: 'PENDING',
   CANCEL: 'CANCEL',
 };
+
+export const PAGINATION_LIMIT = 5;
