@@ -9,14 +9,7 @@ export const AppDataSource = new DataSource({
   password: config.database.password,
   database: config.database.name,
   entities: ['**/entities/*.entity.js'],
+  // entities: ['**/entities/*.entity.{js,ts}'],
   logging: true,
   synchronize: true,
 });
-
-AppDataSource.initialize()
-  .then(() => {
-    console.log('AppDataSource 초기화');
-  })
-  .catch((e) => {
-    console.error(`AppDataSource 초기화 중 오류: ${e}`);
-  });
