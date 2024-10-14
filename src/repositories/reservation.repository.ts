@@ -1,36 +1,36 @@
 import { AppDataSource } from '../db/datasource';
 import { Reservation } from '../entities/reservation.entity';
-import { IFindAllUser, IFindMonthlyReservationByStoreId, IFindUserByName, IFindUserByPhone } from '../interfaces/reservation.interface';
+import { IFindAllUser, IFindMonthlyReservationByStoreId, IFindUserByName, IFindUserByPhone } from '../interfaces/store.interface';
 import { reservationQuery } from '../utils/sql-query.util';
 
 const repository = AppDataSource.getRepository(Reservation);
 
 class ReservationRepository {
-  async findMonthlyReservationByStoreId({ storeId, month }: IFindMonthlyReservationByStoreId){
+  async findMonthlyReservationByStoreId({ id, month }: IFindMonthlyReservationByStoreId){
     const sql = reservationQuery.findMonthlyReservationByStoreId;
-    return await repository.query(sql, [storeId, month]);
+    return await repository.query(sql, [id, month]);
   }
 
-  async findTodayReservationByStoreId(storeId: number) {
+  async findTodayReservationByStoreId(id: number) {
     const sql = reservationQuery.findTodayReservationByStoreId;
-    return await repository.query(sql, [storeId]);
+    return await repository.query(sql, [id]);
   }
 
-  async findAllUser({ storeId, skip }: IFindAllUser) {
+  async findAllUser({ id, skip }: IFindAllUser) {
     const sql = reservationQuery.findAllUser;
-    return await repository.query(sql, [storeId, Number(skip)]);
+    return await repository.query(sql, [id, Number(skip)]);
   }
 
-  async findUserByName({ storeId, name }: IFindUserByName) {
+  async findUserByName({ id, name }: IFindUserByName) {
     const like = `%${name}%`;
     const sql = reservationQuery.findUserByName;
-    return await repository.query(sql, [storeId, like])
+    return await repository.query(sql, [id, like])
   }
   
-  async findUserByPhone({ storeId, phone }: IFindUserByPhone) {
+  async findUserByPhone({ id, phone }: IFindUserByPhone) {
     const like = `%${phone}%`;
     const sql = reservationQuery.findUserByPhone;
-    return await repository.query(sql, [storeId, like])
+    return await repository.query(sql, [id, like])
   }
 }
 

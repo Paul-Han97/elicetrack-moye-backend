@@ -5,7 +5,6 @@ import express from 'express';
 import { errorHandler } from './middlewares/error.middleware';
 import { userRouter } from './routers/user.router';
 import { mainRouter } from './routers/main.router';
-import { reservationRouter } from './routers/reservation.router';
 import { auth } from './middlewares/auth.middleware';
 import { storeRouter } from './routers/store.router';
 
@@ -25,7 +24,6 @@ app.use('/static', auth, express.static('private'));
 
 app.use('/', mainRouter);
 app.use('/users', userRouter);
-app.use('/reservations', auth, reservationRouter);
 app.use('/stores', auth, storeRouter);
 
 app.use(errorHandler);
