@@ -1,11 +1,18 @@
-import { WEEK, WEEK_TYPE, WEEKDAYS_TYPE } from '../constants';
+import { RESERVATION_TYPE, WEEK, WEEK_TYPE, WEEKDAYS_TYPE } from '../constants';
 import { Day } from '../entities/day.entity';
 import { OpeningHour } from '../entities/opening-hour.entity';
 import { StoreDefaultOpeningHour } from '../entities/store-default-opening-hour.entity';
 import { StoreOpeningHourOverride } from '../entities/store-opening-hour-override.entity';
 import { Store } from '../entities/store.entity';
 import { User } from '../entities/user.entity';
+import {
+  IFindMonthlyReservationByStoreId,
+  IFindAllUser,
+  IFindUserByName,
+  IFindUserByPhone,
+} from '../interfaces/store.interface';
 import { ICreateOne, IStore } from '../interfaces/store.interface';
+import { reservationRepository } from '../repositories/reservation.repository';
 import { storeRepository } from '../repositories/store.repository';
 import { getTime, getYmd } from '../utils/date.util';
 
@@ -72,7 +79,7 @@ class StoreService {
           afterBreakTime.updateUser = params.userId;
           afterBreakTime.openFrom = getTime(params.afterBreakTime[i].openFrom);
           afterBreakTime.closeTo = getTime(params.afterBreakTime[i].closeTo);
-          
+
           createOneDto.openingHour.push(afterBreakTime);
         }
       }
@@ -83,6 +90,53 @@ class StoreService {
     const result = await storeRepository.createOne(createOneDto);
 
     return result;
+  }
+
+  async findMonthlyReservationByStoreId({ id, month, }: IFindMonthlyReservationByStoreId) {
+    const results = await reservationRepository.findMonthlyReservationByStoreId(
+      { id, month }
+    );
+    const resultMap = new Map();
+
+    for (const { ymd, type, count } of results) {
+      if (resultMap.has(ymd)) {
+        const map = resultMap.get(ymd);
+        map.set(type, Number(count));
+        continue;
+      }
+
+      const map = new Map();
+
+      map.set(RESERVATION_TYPE.ACCEPT, 0);
+      map.set(RESERVATION_TYPE.PENDING, 0);
+      map.set(RESERVATION_TYPE.CANCEL, 0);
+      map.set(type, Number(count));
+
+      resultMap.set(ymd, map);
+    }
+
+    for (const [key, value] of resultMap) {
+      const data = Object.fromEntries(value);
+      resultMap.set(key, data);
+    }
+
+    return Object.fromEntries(resultMap);
+  }
+
+  async findTodayReservationByStoreId(id: number) {
+    return await reservationRepository.findTodayReservationByStoreId(id);
+  }
+
+  async findAllUser({ id, skip }: IFindAllUser) {
+    return await reservationRepository.findAllUser({ id, skip });
+  }
+
+  async findUserByName({ id, name }: IFindUserByName) {
+    return await reservationRepository.findUserByName({ id, name });
+  }
+
+  async findUserByPhone({ id, phone }: IFindUserByPhone) {
+    return await reservationRepository.findUserByPhone({ id, phone });
   }
 }
 

@@ -30,3 +30,23 @@ export interface ICreateOne {
   storeDefaultOpeningHour: StoreDefaultOpeningHour[];
   openingHour: OpeningHour[];
 }
+
+export interface IFindMonthlyReservationByStoreId {
+  id: number;
+  month: number;
+}
+
+export interface IFindAllUser {
+  id: number;
+  skip: number;
+}
+
+export interface IFindUserByPhone {
+  id: number;
+  phone: string;
+}
+
+export interface IFindUserByName {
+  id: number;
+  name: string;
+}

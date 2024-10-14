@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { reservationController } from '../controllers/reservation.controller';
 import { storeController } from '../controllers/store.controller';
 
 const router = Router();
 
 router.post('/', storeController.createOne);
+router.get('/:id/reservations', storeController.findByMonthOrToday);
 
 export const storeRouter = router;
