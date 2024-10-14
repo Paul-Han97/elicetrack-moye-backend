@@ -13,17 +13,17 @@ export abstract class Common {
     name: 'register_user',
     default: 'ROLE_ADMIN',
   })
-  registerUser: string | number;
+  registeredUser: string | number;
 
   @CreateDateColumn({ type: 'datetime', name: 'register_date' })
-  registerDate: Date;
+  registeredDate: Date;
 
   @Column('varchar', {
     name: 'update_user',
     default: 'ROLE_ADMIN',
   })
-  updateUser: string | number;
+  updatedUser: string | number;
 
   @UpdateDateColumn({ type: 'datetime', name: 'update_date' })
-  updateDate: Date;
+  updatedDate: Date;
 }
