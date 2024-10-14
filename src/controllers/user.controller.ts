@@ -33,7 +33,7 @@ class UserController {
 
       const result = await userService.signup(userDto);
 
-      res.status(200).send({ body: result });
+      res.status(201).send({ body: result });
     } catch (e) {
       next(e);
     }
