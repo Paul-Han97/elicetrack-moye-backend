@@ -8,8 +8,8 @@ export const AppDataSource = new DataSource({
   username: config.database.username,
   password: config.database.password,
   database: config.database.name,
-  entities: ['**/entities/*.entity.js'],
-  // entities: ['**/entities/*.entity.{js,ts}'],
+  // entities: ['**/entities/*.entity.js'],
+  entities: ['**/entities/*.entity.{js,ts}'],
   logging: true,
   synchronize: true,
 });

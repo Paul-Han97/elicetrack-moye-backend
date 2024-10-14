@@ -26,14 +26,14 @@ export function errorHandler(
   next: NextFunction
 ) {
   const [statusMsg, errorMsg] = e.message.split('+');
-  const statusCode = messageMap.get(statusMsg) || 500;
+  const statusCode = messageMap.get(statusMsg) ?? 500;
 
   if (statusCode === 500) {
-    console.log(e.stack);
+    console.error(e.message);
+    console.error(e.stack);
   }
 
   const status = {
-    status_code: statusCode,
     error: statusMsg,
     message: errorMsg,
   };

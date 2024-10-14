@@ -1,9 +1,16 @@
-import { NextFunction, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { IVerify } from '../interfaces/token.interface';
 import { serverMessage, statusMessage } from '../utils/message.util';
 import { Token } from '../utils/token.util';
 
-export async function auth(req: any, res: Response, next: NextFunction) {
+export async function auth(
+  req: Request,
+  res: Response<
+    { error: string | null; data: Record<string, string> },
+    { user: { id: number; role: string } }
+  >,
+  next: NextFunction
+) {
   try {
     const authorization = req.headers.authorization;
 
@@ -21,7 +28,7 @@ export async function auth(req: any, res: Response, next: NextFunction) {
 
     const { id, role } = decoded;
 
-    req.user = { id, role };
+    res.locals.user = { id, role };
 
     next();
   } catch (e) {
