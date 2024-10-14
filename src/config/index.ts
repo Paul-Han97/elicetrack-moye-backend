@@ -2,7 +2,7 @@ import 'dotenv/config';
 
 export default {
   server: {
-    port: process.env.SERVER_PORT || new Error(),
+    port: process.env.SERVER_PORT,
   },
   database: {
     host: process.env.DATABASE_HOST,
