@@ -5,6 +5,7 @@ import { StoreOpeningHourOverride } from '../entities/store-opening-hour-overrid
 import { Store } from '../entities/store.entity';
 import { ICreateOne } from '../interfaces/store.interface';
 import { statusMessage, serverMessage } from '../utils/message.util';
+import { storeQuery } from '../utils/sql-query.util';
 
 const repository = AppDataSource.getRepository(Store);
 
@@ -48,6 +49,11 @@ class StoreRepository {
     }
 
     return serverMessage.S002;
+  }
+
+  async findOpeningHour(id:number) {
+    const sql = storeQuery.findOpeningHour;
+    return await repository.query(sql, [ id ]);
   }
 }
 
