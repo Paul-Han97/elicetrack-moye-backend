@@ -31,8 +31,8 @@ class StoreService {
     store.contact = params.contact;
     store.seatCount = params.totalSeats;
     store.tableCount = params.numberPerTable;
-    store.registerUser = params.userId;
-    store.updateUser = params.userId;
+    store.registeredUser = params.userId;
+    store.updatedUser = params.userId;
 
     const createOneDto: ICreateOne = {
       store: store,
@@ -44,8 +44,8 @@ class StoreService {
     for (let i = 0; i < params.closedDay.length; i++) {
       const storeOpeningHourOverride = new StoreOpeningHourOverride();
       storeOpeningHourOverride.store = store;
-      storeOpeningHourOverride.registerUser = params.userId;
-      storeOpeningHourOverride.updateUser = params.userId;
+      storeOpeningHourOverride.registeredUser = params.userId;
+      storeOpeningHourOverride.updatedUser = params.userId;
       storeOpeningHourOverride.isClosed = true;
       storeOpeningHourOverride.closeTo = getYmd(params.closedDay[i]);
       createOneDto.storeOpeningHourOverride.push(storeOpeningHourOverride);
@@ -58,15 +58,15 @@ class StoreService {
       const storeDefaultOpeningHour = new StoreDefaultOpeningHour();
       storeDefaultOpeningHour.store = store;
       storeDefaultOpeningHour.day = day;
-      storeDefaultOpeningHour.registerUser = params.userId;
-      storeDefaultOpeningHour.updateUser = params.userId;
+      storeDefaultOpeningHour.registeredUser = params.userId;
+      storeDefaultOpeningHour.updatedUser = params.userId;
 
       createOneDto.storeDefaultOpeningHour.push(storeDefaultOpeningHour);
 
       const openingHour = new OpeningHour();
       openingHour.storeDefaultOpeningHour = storeDefaultOpeningHour;
-      openingHour.registerUser = params.userId;
-      openingHour.updateUser = params.userId;
+      openingHour.registeredUser = params.userId;
+      openingHour.updatedUser = params.userId;
 
       if (!params.dayOfWeekDay.includes(i)) {
         openingHour.openFrom = getTime(params.openingHour[i].openFrom);
@@ -75,8 +75,8 @@ class StoreService {
         if (params.afterBreakTime.length > 0) {
           const afterBreakTime = new OpeningHour();
           afterBreakTime.storeDefaultOpeningHour = storeDefaultOpeningHour;
-          afterBreakTime.registerUser = params.userId;
-          afterBreakTime.updateUser = params.userId;
+          afterBreakTime.registeredUser = params.userId;
+          afterBreakTime.updatedUser = params.userId;
           afterBreakTime.openFrom = getTime(params.afterBreakTime[i].openFrom);
           afterBreakTime.closeTo = getTime(params.afterBreakTime[i].closeTo);
 
@@ -130,7 +130,6 @@ class StoreService {
     const openingHour = await storeRepository.findOpeningHour(id);
     const reservations = await reservationRepository.findTodayReservationByStoreId(id);
 
-    console.log(openingHour);
     const result = {
       open: openingHour[0].open,
       close: openingHour[0].close,

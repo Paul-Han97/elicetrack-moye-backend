@@ -114,11 +114,11 @@ class UserRepository {
 
     try {
       const newUser = await manager.getRepository(User).save(signupDto.user);
-      signupDto.credential.registerUser = newUser.id;
-      signupDto.credential.updateUser = newUser.id;
+      signupDto.credential.registeredUser = newUser.id;
+      signupDto.credential.updatedUser = newUser.id;
 
-      signupDto.userCredential.registerUser = newUser.id;
-      signupDto.userCredential.updateUser = newUser.id;
+      signupDto.userCredential.registeredUser = newUser.id;
+      signupDto.userCredential.updatedUser = newUser.id;
 
       await manager.getRepository(Credential).save(signupDto.credential);
       await manager.getRepository(UserCredential).save(signupDto.userCredential);
