@@ -92,7 +92,10 @@ class StoreService {
     return result;
   }
 
-  async findMonthlyReservationByStoreId({ id, month, }: IFindMonthlyReservationByStoreId) {
+  async findMonthlyReservationByStoreId({
+    id,
+    month,
+  }: IFindMonthlyReservationByStoreId) {
     const results = await reservationRepository.findMonthlyReservationByStoreId(
       { id, month }
     );
@@ -124,7 +127,16 @@ class StoreService {
   }
 
   async findTodayReservationByStoreId(id: number) {
-    return await reservationRepository.findTodayReservationByStoreId(id);
+    const openingHour = await storeRepository.findOpeningHour(id);
+    const reservations = await reservationRepository.findTodayReservationByStoreId(id);
+
+    console.log(openingHour);
+    const result = {
+      open: openingHour[0].open,
+      close: openingHour[0].close,
+      reservations
+    }
+    return result;
   }
 
   async findAllUser({ id, skip }: IFindAllUser) {

@@ -75,3 +75,14 @@ export const reservationQuery = {
         AND B.phone LIKE ?`,
 };
 
+export const storeQuery = {
+  findOpeningHour:
+  `SELECT MIN(C.open_from) open
+         ,MAX(C.close_to) close
+     FROM store A
+     INNER JOIN store_default_opening_hour B ON A.id = B.store_id 
+     INNER JOIN opening_hour C ON B.id  = C.store_default_opening_hour_id
+     INNER JOIN day D ON B.day_id = D.id
+    WHERE A.id = ?
+      AND D.id = DAYOFWEEK(NOW())`
+}
