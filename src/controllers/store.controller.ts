@@ -1,11 +1,11 @@
-import { NextFunction, Response } from 'express';
-import { IOpeningHour, IStore } from '../interfaces/store.interface';
+import { NextFunction, Request, Response } from 'express';
 import { WEEK, WEEK_TYPE } from '../constants';
+import { IOpeningHour } from '../interfaces/store.interface';
 import { storeService } from '../services/store.service';
-import { statusMessage, serverMessage } from '../utils/message.util';
+import { serverMessage, statusMessage } from '../utils/message.util';
 
 class StoreController {
-  async createOne(req: any, res: Response, next: NextFunction) {
+  async createOne(req: Request, res: Response, next: NextFunction) {
     try {
       const storeDto = req.body;
       const openingHour: IOpeningHour[] = [];
@@ -44,7 +44,7 @@ class StoreController {
       storeDto.openingHour = openingHour;
       storeDto.afterBreakTime = afterOpeningHour;
 
-      storeDto.userId = req.user.id;
+      storeDto.userId = res.locals.user.id;
       const result = await storeService.createOne(storeDto);
 
       res.status(201).send({ body: result });
@@ -53,7 +53,16 @@ class StoreController {
     }
   }
 
-  async findByMonthOrToday(req: any, res: Response, next: NextFunction) {
+  async findByMonthOrToday(
+    req: Request<
+      { id: number },
+      {},
+      {},
+      { month: number; search: string; skip: number }
+    >,
+    res: Response,
+    next: NextFunction
+  ) {
     try {
       const { id } = req.params;
       const { month, search, skip } = req.query;
@@ -65,24 +74,21 @@ class StoreController {
 
       let result;
 
-      if(month) {
-        result = await storeService.findMonthlyReservationByStoreId({ id, month });
-      }
-      
-      else if(skip) {
+      if (month) {
+        result = await storeService.findMonthlyReservationByStoreId({
+          id,
+          month,
+        });
+      } else if (skip) {
         result = await storeService.findAllUser({ id, skip });
-      }
-
-      else if(search) {
+      } else if (search) {
         const regex = new RegExp('^[0-9]+$');
-        if(regex.test(search)) {
+        if (regex.test(search)) {
           result = await storeService.findUserByPhone({ id, phone: search });
         } else {
           result = await storeService.findUserByName({ id, name: search });
         }
-      }
-      
-      else {
+      } else {
         result = await storeService.findTodayReservationByStoreId(id);
       }
 

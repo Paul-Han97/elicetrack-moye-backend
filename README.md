@@ -12,7 +12,7 @@
 ## error middleware
 
 ```ts
-(req: any, res: Response, next: NextFunction) => {
+(req: Request, res: Response, next: NextFunction) => {
   throw new Error(`${statusMessage.BAD_REQUEST}+${serverMessage.E001}`);
 };
 ```

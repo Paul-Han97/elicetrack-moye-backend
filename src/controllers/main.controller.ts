@@ -1,10 +1,10 @@
-import { NextFunction, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { IGenerate, IVerify } from '../interfaces/token.interface';
 import { userService } from '../services/user.service';
 import { Token } from '../utils/token.util';
 
 class MainController {
-  async login(req: any, res: Response, next: NextFunction) {
+  async login(req: Request, res: Response, next: NextFunction) {
     try {
       const { email, password } = req.body;
 
@@ -16,7 +16,7 @@ class MainController {
     }
   }
 
-  async refresh(req: any, res: Response, next: NextFunction) {
+  async refresh(req: Request, res: Response, next: NextFunction) {
     try {
       const authorization = req.headers.authorization;
 
