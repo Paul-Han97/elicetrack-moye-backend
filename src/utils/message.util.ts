@@ -14,6 +14,7 @@ export const statusMessage = {
 export const serverMessage = {
   // 성공 메세지
   S001: '회원가입이 완료 되었습니다.',
+  S002: '가게 등록이 완료 되었습니다.',
 
   // 에러 메세지
   E001: '올바른 요청이 아닙니다.',
