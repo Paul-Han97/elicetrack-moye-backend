@@ -19,6 +19,9 @@ export class Store extends Common {
   businessName: string;
 
   @Column('varchar')
+  description: string;
+
+  @Column('varchar')
   name: string;
 
   @Column('varchar')
