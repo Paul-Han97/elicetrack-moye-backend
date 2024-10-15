@@ -345,3 +345,75 @@
   "body": "가게 등록이 완료 되었습니다."
 }
 ```
+
+### 가게 조회
+
+#### `GET /stores/:id`
+
+- **request header**
+
+```json
+{
+  // authorization = {Access Token}
+  "authorization": "Bearer eyJhbGciOiJIUz...oOnz2pX1x6bb-C6A"
+}
+```
+
+- **response header**
+
+```json
+{
+  "body": {
+    "openingHour": [
+      {
+        "type": "평일",
+        "openFrom": "10:00:00",
+        "closeTo": "13:00:00",
+        "startBreakTime": "11:00:00",
+        "endBreakTime": "12:00:00"
+      },
+      {
+        "type": "주말",
+        "openFrom": "09:30:00",
+        "closeTo": "18:30:00",
+        "startBreakTime": "13:30:00",
+        "endBreakTime": "14:30:00"
+      }
+    ],
+    "closedDay": [
+      {
+        "ymd": "2024-01-25"
+      },
+      {
+        "ymd": "2024-03-23"
+      },
+      {
+        "ymd": "2024-11-30"
+      },
+      {
+        "ymd": "2024-05-23"
+      },
+      {
+        "ymd": "2024-10-30"
+      }
+    ],
+    "regularHoliday": [1, 4, 7],
+    "image": [
+      {
+        "isPrimary": "TRUE",
+        "src": "private/15/image1.jpg"
+      },
+      {
+        "isPrimary": "FALSE",
+        "src": "private/15/image2.jpg"
+      }
+    ],
+    "businessRegistrationNumber": "123-10-12345",
+    "contact": "02-000-2222",
+    "totalSeats": 6,
+    "numberPerTable": 12,
+    "description": "테스트 매장",
+    "email": "ph@elice.com"
+  }
+}
+```
