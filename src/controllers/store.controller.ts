@@ -53,6 +53,22 @@ class StoreController {
     }
   }
 
+  async getAllStoreInformation(
+    req: Request<{ id: number }>,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const { id } = req.params;
+
+      const result = await storeService.getAllStoreInformation(id);
+
+      res.status(200).send({ body: result });
+    } catch (e) {
+      next(e);
+    }
+  }
+
   async findByMonthOrToday(
     req: Request<
       { id: number },

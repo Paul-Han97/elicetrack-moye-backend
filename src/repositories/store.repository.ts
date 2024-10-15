@@ -51,9 +51,34 @@ class StoreRepository {
     return serverMessage.S002;
   }
 
-  async findOpeningHour(id:number) {
-    const sql = storeQuery.findOpeningHour;
-    return await repository.query(sql, [ id ]);
+  async findTodayOpeningHourById(id: number) {
+    const sql = storeQuery.findTodayOpeningHourById;
+    return await repository.query(sql, [id]);
+  }
+
+  async findById(id: number) {
+    const sql = storeQuery.findById;
+    return await repository.query(sql, [id]);
+  }
+
+  async findOpeningHourById(id: number) {
+    const sql = storeQuery.findOpeningHourById;
+    return await repository.query(sql, [id]);
+  }
+
+  async findClosedDayById(id: number) {
+    const sql = storeQuery.findClosedDayById;
+    return await repository.query(sql, [id]);
+  }
+
+  async findRegularHolidayById(id: number) {
+    const sql = storeQuery.findRegularHolidayById;
+    return await repository.query(sql, [id]);
+  }
+
+  async findImageById(id: number) {
+    const sql = storeQuery.findImageById;
+    return await repository.query(sql, [id]);
   }
 }
 
