@@ -86,7 +86,7 @@
 
 ### 하루 예약 조회
 
-#### `GET /reservations/:storeId/stores`
+#### `GET /stores/:id/reservations`
 
 - **request header**
 
@@ -106,6 +106,7 @@
       "close": "18:00",
     [
       {
+        "id": 1,
         "name": "엘리스",
         "count": 2,
         "startTime": "10:00",
@@ -114,6 +115,7 @@
         "status": "CANCEL"
       },
       {
+        "id": 2,
         "name": "예약자1",
         "count": 2,
         "startTime": "13:00",
@@ -122,6 +124,7 @@
         "status": "PENDING"
       },
       {
+        "id": 3,
         "name": "예약자2",
         "count": 2,
         "startTime": "16:00",
@@ -130,6 +133,7 @@
         "status": "ACCEPT"
       },
       {
+        "id": 4,
         "name": "예약자3",
         "count": 4,
         "startTime": "18:00",
@@ -144,7 +148,7 @@
 
 ### 한 달 예약 조회 - 검색
 
-#### `GET /reservations/storeId/stores?skip=0`
+#### `GET /stores/:id/reservations?skip=0`
 
 - **request header**
 
@@ -216,7 +220,7 @@
 
 ### 한 달 예약 조회 - 번호 검색
 
-#### `GET /reservations/storeId/stores?search=0103333`
+#### `GET /stores/:id/reservations?search=0103333`
 
 - **request header**
 
