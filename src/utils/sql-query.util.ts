@@ -15,7 +15,8 @@ export const reservationQuery = {
            ,A.reservation_state_id`,
 
   findTodayReservationByStoreId: 
-  `SELECT B.name name
+  `SELECT A.id
+         ,B.name name
          ,A.count count
          ,DATE_FORMAT(A.start_time, '%H:%i') startTime
          ,DATE_FORMAT(A.end_time, '%H:%i') endTime
@@ -119,7 +120,7 @@ export const storeQuery = {
 
   findById:
     `SELECT A.business_registration_number businessRegistrationNumber
-           ,A.business_name business_name
+           ,A.business_name businessName
            ,A.contact contact
            ,A.seat_count totalSeats
            ,A.table_count numberPerTable
