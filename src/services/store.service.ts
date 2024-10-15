@@ -100,7 +100,6 @@ class StoreService {
     const regularHoliday = await storeRepository.findRegularHolidayById(id);
     const image = await storeRepository.findImageById(id);
 
-    console.log(openingHour)
     const result = {
       openingHour,
       closedDay,
