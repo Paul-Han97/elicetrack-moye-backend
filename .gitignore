@@ -1,5 +1,6 @@
 .env.product
 .vscode
+private
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,node,linux,macos,windows
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,node,linux,macos,windows
