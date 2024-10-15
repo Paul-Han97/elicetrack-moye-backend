@@ -1,30 +1,51 @@
+import { v6 as uuidv6 } from 'uuid';
+import { Request } from 'express';
 import multer from 'multer';
-import fs from 'fs';
-import path from 'path';
+import { fileUtil } from '../utils/file.util';
+import { serverMessage, statusMessage } from '../utils/message.util';
 
-try {
-  fs.readdirSync('uploads');
-} catch (e) {
-  console.error('uploads 폴더가 없습니다. 폴더를 생성 합니다.');
-  fs.mkdirSync('uploads');
-}
+const fileFilter = (
+  req: Request,
+  file: Express.Multer.File,
+  cb: multer.FileFilterCallback
+) => {
+  const extname = fileUtil.getFileExtname(file);
 
-export const upload = multer({
-  storage: multer.diskStorage({
-    filename(req, file, cb) {
-      console.log('storage', file);
-      cb(null, file.originalname);
-    },
-    destination(req, file, cb) {
-      console.log('destination', file);
-      cb(null, 'uploads');
-    },
-  }),
-  fileFilter(req, file, cb) {
-    const ext = path.extname(file.originalname);
-    if (ext !== '.jpg') {
-      return cb(new Error('파일 확장자가 .jpg이어야 합니다.'));
-    }
-    cb(null, true);
+  if (extname.toLowerCase() !== fileUtil.JPG) {
+    const msg = `${statusMessage.BAD_REQUEST}+${serverMessage.E007}`;
+    return cb(new Error(msg));
+  }
+
+  cb(null, true);
+};
+
+const storage = multer.diskStorage({
+  filename(req, file, cb) {
+    const extname = fileUtil.getFileExtname(file);
+
+    const filename = `${uuidv6()}${extname}`;
+
+    file.originalname = filename;
+
+    cb(null, file.originalname);
+  },
+  destination(req, file, cb) {
+    const { storeId } = req.params;
+
+    fileUtil.mkdir(storeId);
+
+    cb(null, fileUtil.getWorkingDir(storeId));
   },
 });
+
+const limits = {
+  fileSize: 1 * 1024 * 1024 * 10,
+};
+
+const upload = multer({
+  storage,
+  fileFilter,
+  limits,
+});
+
+export default upload.array('files', 5);
