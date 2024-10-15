@@ -76,7 +76,7 @@ export const reservationQuery = {
 };
 
 export const storeQuery = {
-  findOpeningHour:
+  findTodayOpeningHourById:
   `SELECT MIN(C.open_from) open
          ,MAX(C.close_to) close
      FROM store A
@@ -84,5 +84,55 @@ export const storeQuery = {
      INNER JOIN opening_hour C ON B.id  = C.store_default_opening_hour_id
      INNER JOIN day D ON B.day_id = D.id
     WHERE A.id = ?
-      AND D.id = DAYOFWEEK(NOW())`
+      AND D.id = DAYOFWEEK(NOW())`,
+
+  findOpeningHourById:
+  `SELECT IF(C.id = 1, '평일', '주말') type
+         ,MIN(D.open_from) openFrom
+         ,MAX(D.close_to) closeTo
+         ,MIN(D.close_to) startBreakTime
+         ,MAX(D.open_from) endBreakTime
+     FROM store A
+     INNER JOIN store_default_opening_hour B ON B.store_id = A.id 
+     INNER JOIN day C ON B.day_id = C.id
+     INNER JOIN opening_hour D ON B.id = D.store_default_opening_hour_id
+    WHERE A.id = ?
+      AND D.open_from IS NOT NULL
+      AND C.id IN (1, 2)
+   GROUP BY C.id`,
+
+   findClosedDayById:
+   `SELECT DATE_FORMAT(B.close_to, '%Y-%m-%d') ymd
+      FROM store A
+     INNER JOIN store_opening_hour_override B ON A.id  = B.store_id
+     WHERE A.id = ?
+       AND B.is_closed = TRUE`,
+       
+  findRegularHolidayById:
+    `SELECT C.id closedDay
+      FROM store A
+      INNER JOIN store_default_opening_hour B ON B.store_id = A.id 
+      INNER JOIN day C ON B.day_id = C.id
+      INNER JOIN opening_hour D ON B.id = D.store_default_opening_hour_id
+      WHERE A.id = ?
+        AND D.open_from IS NULL`,
+
+  findById:
+    `SELECT A.business_registration_number businessRegistrationNumber
+           ,A.contact contact
+           ,A.seat_count totalSeats
+           ,A.table_count numberPerTable
+           ,A.description description
+           ,B.email email
+       FROM store A
+       INNER JOIN user B ON A.user_id = B.id
+      WHERE A.id = ?`,
+  
+  findImageById:
+    `SELECT IF(B.is_primary = TRUE, 'TRUE', 'FALSE') isPrimary
+	         ,C.src src
+       FROM store A
+       INNER JOIN image_store B ON A.id = B.store_id 
+       INNER JOIN image C ON B.image_id = C.id 
+      WHERE A.id = ?`
 }

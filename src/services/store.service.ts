@@ -51,9 +51,9 @@ class StoreService {
       createOneDto.storeOpeningHourOverride.push(storeOpeningHourOverride);
     }
 
-    for (let i = WEEK_TYPE.SUN; i <= WEEK; i++) {
+    for (let i = WEEK_TYPE.SUN - 1; i < WEEK; i++) {
       const day = new Day();
-      day.id = i;
+      day.id = i + 1;
 
       const storeDefaultOpeningHour = new StoreDefaultOpeningHour();
       storeDefaultOpeningHour.store = store;
@@ -67,8 +67,9 @@ class StoreService {
       openingHour.storeDefaultOpeningHour = storeDefaultOpeningHour;
       openingHour.registeredUser = params.userId;
       openingHour.updatedUser = params.userId;
-
-      if (!params.dayOfWeekDay.includes(i)) {
+      
+      const isBusinessDay = !(params?.dayOfWeekDay?.includes(i));
+      if (isBusinessDay) {
         openingHour.openFrom = getTime(params.openingHour[i].openFrom);
         openingHour.closeTo = getTime(params.openingHour[i].closeTo);
 
@@ -88,6 +89,26 @@ class StoreService {
     }
 
     const result = await storeRepository.createOne(createOneDto);
+
+    return result;
+  }
+
+  async getAllStoreInformation(id:number) {
+    const store = await storeRepository.findById(id);
+    const openingHour = await storeRepository.findOpeningHourById(id);
+    const closedDay = await storeRepository.findClosedDayById(id);
+    const regularHoliday = await storeRepository.findRegularHolidayById(id);
+    const image = await storeRepository.findImageById(id);
+
+    console.log(openingHour)
+    const result = {
+      openingHour,
+      closedDay,
+      regularHoliday,
+      image
+    };
+
+    Object.assign(result, ...store);
 
     return result;
   }
@@ -127,7 +148,7 @@ class StoreService {
   }
 
   async findTodayReservationByStoreId(id: number) {
-    const openingHour = await storeRepository.findOpeningHour(id);
+    const openingHour = await storeRepository.findTodayOpeningHourById(id);
     const reservations = await reservationRepository.findTodayReservationByStoreId(id);
 
     const result = {
