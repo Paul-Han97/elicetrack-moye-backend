@@ -5,7 +5,7 @@ import { ImageStore } from './image-store.entity';
 @Entity()
 export class Image extends Common {
   @Column('varchar')
-  src: string;
+  url: string;
 
   @OneToMany(() => ImageStore, (imageStore) => imageStore.image)
   imageStore: ImageStore;

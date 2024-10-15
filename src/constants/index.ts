@@ -31,3 +31,7 @@ export const enum WEEK_TYPE {
 export const WEEKDAYS_TYPE = '평일';
 
 export const WEEKEND_TYPE = '주말';
+
+export const STATIC_PATH = 'static';
+
+export const URL_SEP = '/';
