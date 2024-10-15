@@ -417,3 +417,25 @@
   }
 }
 ```
+
+### 이미지 등록
+
+#### `POST /uploads/:storeId`
+
+- **request header**
+
+```json
+{
+  // authorization = {Access Token}
+  "authorization": "Bearer eyJhbGciOiJIUz...oOnz2pX1x6bb-C6A",
+  "Content-Type": "multipart/form-data"
+}
+```
+
+- **response**
+
+```json
+{
+  "body": "가게 등록이 완료 되었습니다."
+}
+```
