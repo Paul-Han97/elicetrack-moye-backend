@@ -101,40 +101,44 @@
 
 ```json
 {
-  "body": [
-    {
-      "name": "엘리스",
-      "count": 2,
-      "startTime": "10:00",
-      "endTime": "11:59",
-      "phone": "01091912929",
-      "status": "CANCEL"
-    },
-    {
-      "name": "예약자1",
-      "count": 2,
-      "startTime": "13:00",
-      "endTime": "15:59",
-      "phone": "01033334444",
-      "status": "PENDING"
-    },
-    {
-      "name": "예약자2",
-      "count": 2,
-      "startTime": "16:00",
-      "endTime": "17:59",
-      "phone": "01033334444",
-      "status": "ACCEPT"
-    },
-    {
-      "name": "예약자3",
-      "count": 4,
-      "startTime": "18:00",
-      "endTime": "18:59",
-      "phone": "01033334444",
-      "status": "ACCEPT"
-    }
-  ]
+  "body": {
+      "open": "10:10",
+      "close": "18:00",
+    [
+      {
+        "name": "엘리스",
+        "count": 2,
+        "startTime": "10:00",
+        "endTime": "11:59",
+        "phone": "01091912929",
+        "status": "CANCEL"
+      },
+      {
+        "name": "예약자1",
+        "count": 2,
+        "startTime": "13:00",
+        "endTime": "15:59",
+        "phone": "01033334444",
+        "status": "PENDING"
+      },
+      {
+        "name": "예약자2",
+        "count": 2,
+        "startTime": "16:00",
+        "endTime": "17:59",
+        "phone": "01033334444",
+        "status": "ACCEPT"
+      },
+      {
+        "name": "예약자3",
+        "count": 4,
+        "startTime": "18:00",
+        "endTime": "18:59",
+        "phone": "01033334444",
+        "status": "ACCEPT"
+      }
+    ]
+  }
 }
 ```
 
@@ -271,5 +275,73 @@
       "endTime": "11:59"
     }
   ]
+}
+```
+
+### 가게 등록
+
+#### `POST /stores`
+
+- **request header**
+
+```json
+{
+  // authorization = {Access Token}
+  "authorization": "Bearer eyJhbGciOiJIUz...oOnz2pX1x6bb-C6A"
+}
+```
+
+- **request**
+
+```json
+{
+  "businessRegistrationNumber": "123-10-12345",
+  "businessName": "테스트(상호명)",
+  "description": "테스트 매장",
+  "name": "테스트 매장 이름",
+  "address": "서울특별시 송파구 석촌동 163-1",
+  "contact": "02-000-2222",
+  "totalSeats": 6,
+  "numberPerTable": 12,
+  "openingHour": [
+    {
+      "type": "평일",
+      "openFrom": "09:30",
+      "closeTo": "18:30"
+    },
+    {
+      "type": "주말",
+      "openFrom": "10:00",
+      "closeTo": "13:00"
+    }
+  ],
+  "breakTime": [
+    {
+      "type": "평일",
+      "openFrom": "13:30",
+      "closeTo": "14:30"
+    },
+    {
+      "type": "주말",
+      "openFrom": "11:00",
+      "closeTo": "12:00"
+    }
+  ],
+  "closedDay": [
+    "2024-01-25",
+    "2024-03-23",
+    "2024-11-30",
+    "2024-05-23",
+    "2024-10-30"
+  ],
+  "dayOfWeekDay": [1, 6, 7]
+}
+```
+
+- **response**
+
+```json
+{
+  "body": "가게 등록이 완료 되었습니다."
 }
 ```
