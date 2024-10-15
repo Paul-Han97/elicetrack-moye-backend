@@ -282,6 +282,50 @@
 }
 ```
 
+### 예약 한 건 수정
+
+#### `PUT /reservations/:id`
+
+- **request header**
+
+```json
+{
+  // authorization = {Access Token}
+  "authorization": "Bearer eyJhbGciOiJIUz...oOnz2pX1x6bb-C6A"
+}
+```
+
+- **request**
+
+```json
+{
+  // "ACCEPT" | "PENDING" | "CANCEL"
+  "state": "PENDING"
+}
+```
+
+- **response**
+
+```json
+{
+  "body": {
+    "id": 2,
+    "registeredUser": 1,
+    "registeredDate": "2024-10-13T23:21:12.935Z",
+    "updatedUser": 1,
+    "updatedDate": "2024-10-15T04:12:47.000Z",
+    "description": "예약2",
+    "count": 4,
+    "startTime": "2024-10-28T04:00:00.000Z",
+    "endTime": "2024-10-28T05:00:00.000Z",
+    "reservationState": {
+      "id": 2,
+      "type": "PENDING"
+    }
+  }
+}
+```
+
 ### 가게 등록
 
 #### `POST /stores`
