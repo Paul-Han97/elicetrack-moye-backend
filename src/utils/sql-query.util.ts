@@ -119,6 +119,7 @@ export const storeQuery = {
 
   findById:
     `SELECT A.business_registration_number businessRegistrationNumber
+           ,A.business_name business_name
            ,A.contact contact
            ,A.seat_count totalSeats
            ,A.table_count numberPerTable
@@ -130,7 +131,7 @@ export const storeQuery = {
   
   findImageById:
     `SELECT IF(B.is_primary = TRUE, 'TRUE', 'FALSE') isPrimary
-	         ,C.src src
+	         ,C.url url
        FROM store A
        INNER JOIN image_store B ON A.id = B.store_id 
        INNER JOIN image C ON B.image_id = C.id 
