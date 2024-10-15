@@ -34,7 +34,9 @@ class MainController {
         role: decoded.role,
       };
 
-      const result = Token.generate(payload);
+      const result = {
+        access: Token.generate(payload),
+      };
 
       res.status(200).send({ body: result });
     } catch (e) {
@@ -48,12 +50,16 @@ class MainController {
       const { storeId } = req.params;
 
       const files = req.files;
-      
+
       const filenames: string[] = files.map((data: { filename: string }) => {
         return data.filename;
       });
 
-      const result = await imageService.createOne({ userId, storeId, filenames });
+      const result = await imageService.createOne({
+        userId,
+        storeId,
+        filenames,
+      });
 
       res.status(201).send({ body: result });
     } catch (e) {
