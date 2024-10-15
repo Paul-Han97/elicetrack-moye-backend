@@ -52,6 +52,14 @@ class ReservationRepository {
 
     return [...leftSide, ...rightSide];
   }
+
+  async findById(id:number) {
+    return await repository.findOneBy({id});
+  }
+
+  async updateOne(reservation: Reservation) {
+    return await repository.save(reservation);
+  }
 }
 
 export const reservationRepository = new ReservationRepository();

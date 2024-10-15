@@ -8,7 +8,13 @@ export const enum ROLE_TYPE {
   ADMIN_ID = 3,
 }
 
-export const enum RESERVATION_TYPE {
+export enum RESERVATION_TYPE_ID {
+  ACCEPT = 1,
+  PENDING = 2,
+  CANCEL = 3,
+}
+
+export enum RESERVATION_TYPE {
   ACCEPT = 'ACCEPT',
   PENDING = 'PENDING',
   CANCEL = 'CANCEL',

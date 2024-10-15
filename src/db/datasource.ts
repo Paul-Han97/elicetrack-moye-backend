@@ -13,3 +13,13 @@ export const AppDataSource = new DataSource({
   logging: true,
   synchronize: true,
 });
+
+export function dbConnect() {
+  AppDataSource.initialize()
+    .then(() => {
+      console.log('AppDataSource 초기화 성공');
+    })
+    .catch((e) => {
+      console.error(`AppDataSource 초기화 중 오류: ${e}`);
+    });
+}
