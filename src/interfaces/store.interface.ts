@@ -1,7 +1,7 @@
-import { OpeningHour } from "../entities/opening-hour.entity";
-import { StoreDefaultOpeningHour } from "../entities/store-default-opening-hour.entity";
-import { StoreOpeningHourOverride } from "../entities/store-opening-hour-override.entity";
-import { Store } from "../entities/store.entity";
+import { OpeningHour } from '../entities/opening-hour.entity';
+import { StoreDefaultOpeningHour } from '../entities/store-default-opening-hour.entity';
+import { StoreOpeningHourOverride } from '../entities/store-opening-hour-override.entity';
+import { Store } from '../entities/store.entity';
 
 export interface IOpeningHour {
   openFrom: string;
@@ -10,6 +10,7 @@ export interface IOpeningHour {
 
 export interface IStore {
   userId: number;
+  id: number;
   businessRegistrationNumber: string;
   businessName: string;
   description: string;
@@ -25,6 +26,13 @@ export interface IStore {
 }
 
 export interface ICreateOne {
+  store: Store;
+  storeOpeningHourOverride: StoreOpeningHourOverride[];
+  storeDefaultOpeningHour: StoreDefaultOpeningHour[];
+  openingHour: OpeningHour[];
+}
+
+export interface IDeleteOne {
   store: Store;
   storeOpeningHourOverride: StoreOpeningHourOverride[];
   storeDefaultOpeningHour: StoreDefaultOpeningHour[];

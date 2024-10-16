@@ -119,7 +119,8 @@ export const storeQuery = {
         AND D.open_from IS NULL`,
 
   findById:
-    `SELECT A.business_registration_number businessRegistrationNumber
+    `SELECT A.id
+           ,A.business_registration_number businessRegistrationNumber
            ,A.business_name businessName
            ,A.contact contact
            ,A.seat_count totalSeats
