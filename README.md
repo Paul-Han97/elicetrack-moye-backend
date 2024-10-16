@@ -480,6 +480,14 @@
 }
 ```
 
+- **request**
+```json
+{
+  // 파일
+  "files": {file}
+}
+```
+
 - **response**
 
 ```json
