@@ -3,6 +3,7 @@ import { IGenerate, IVerify } from '../interfaces/token.interface';
 import { userService } from '../services/user.service';
 import { Token } from '../utils/token.util';
 import { imageService } from '../services/image.service';
+import { serverMessage, statusMessage } from '../utils/message.util';
 
 class MainController {
   async login(req: Request, res: Response, next: NextFunction) {
@@ -50,6 +51,11 @@ class MainController {
       const { storeId } = req.params;
 
       const files = req.files;
+      
+      if(files.length === 0) {
+        const msg = `${statusMessage.BAD_REQUEST}+${serverMessage.E001}`
+        throw new Error(msg);
+      }
 
       const filenames: string[] = files.map((data: { filename: string }) => {
         return data.filename;
