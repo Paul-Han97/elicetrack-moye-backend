@@ -41,14 +41,16 @@ class StoreService {
       openingHour: [],
     };
 
-    for (let i = 0; i < params.closedDay.length; i++) {
-      const storeOpeningHourOverride = new StoreOpeningHourOverride();
-      storeOpeningHourOverride.store = store;
-      storeOpeningHourOverride.registeredUser = params.userId;
-      storeOpeningHourOverride.updatedUser = params.userId;
-      storeOpeningHourOverride.isClosed = true;
-      storeOpeningHourOverride.closeTo = getYmd(params.closedDay[i]);
-      createOneDto.storeOpeningHourOverride.push(storeOpeningHourOverride);
+    if(params.closedDay) {
+      for (let i = 0; i < params.closedDay.length; i++) {
+        const storeOpeningHourOverride = new StoreOpeningHourOverride();
+        storeOpeningHourOverride.store = store;
+        storeOpeningHourOverride.registeredUser = params.userId;
+        storeOpeningHourOverride.updatedUser = params.userId;
+        storeOpeningHourOverride.isClosed = true;
+        storeOpeningHourOverride.closeTo = getYmd(params.closedDay[i]);
+        createOneDto.storeOpeningHourOverride.push(storeOpeningHourOverride);
+      }
     }
 
     for (let i = WEEK_TYPE.SUN - 1; i < WEEK; i++) {

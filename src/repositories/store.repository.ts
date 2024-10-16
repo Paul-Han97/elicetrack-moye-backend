@@ -18,8 +18,9 @@ class StoreRepository {
 
     const manager = queryRunner.manager;
 
+    let newStore;
     try {
-      await manager.getRepository(Store).save(createOneDto.store);
+      newStore = await manager.getRepository(Store).save(createOneDto.store);
 
       for (let i = 0; i < createOneDto.storeOpeningHourOverride.length; i++) {
         await manager
@@ -48,7 +49,12 @@ class StoreRepository {
       await queryRunner.release();
     }
 
-    return serverMessage.S002;
+    const result = {
+      id: newStore.id,
+      message: serverMessage.S002
+    }
+    
+    return result;
   }
 
   async findTodayOpeningHourById(id: number) {

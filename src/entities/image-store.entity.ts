@@ -19,6 +19,6 @@ export class ImageStore extends Common {
   })
   store: Store;
 
-  @Column('boolean', { name: 'is_primary' })
+  @Column('boolean', { name: 'is_primary', default: false })
   isPrimary: boolean;
 }
