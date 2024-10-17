@@ -41,3 +41,6 @@ export const WEEKEND_TYPE = '주말';
 export const STATIC_PATH = 'static';
 
 export const URL_SEP = '/';
+
+// 60 * 60 * 24 = (1일, 24시간)
+export const COOKIE_MAX_AGE = 86400;
