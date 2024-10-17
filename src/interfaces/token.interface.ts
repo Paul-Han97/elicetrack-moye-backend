@@ -1,3 +1,5 @@
+import { JwtPayload } from "jsonwebtoken";
+
 export interface IGenerate {
   type: string;
   id: number;
@@ -6,13 +8,11 @@ export interface IGenerate {
 
 export interface IVerify {
   type: string;
-  authorization: string | undefined;
+  token: string;
 }
 
-export interface IDecodeJwt {
+export interface IDecodeJwt extends JwtPayload {
   id: number,
   role: string,
-  exp: number,
-  jti: string,
-  iat: number
+  isValid: boolean
 }

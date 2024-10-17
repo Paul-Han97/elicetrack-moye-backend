@@ -8,6 +8,7 @@ import { mainRouter } from './routers/main.router';
 import { reservationRouter } from './routers/reservation.router';
 import { storeRouter } from './routers/store.router';
 import { userRouter } from './routers/user.router';
+import cookieParser from 'cookie-parser';
 
 const PORT = config.server.port;
 const app = express();
@@ -20,6 +21,7 @@ app.use(
 
 dbConnect();
 
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 

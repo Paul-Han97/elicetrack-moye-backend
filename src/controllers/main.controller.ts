@@ -1,45 +1,42 @@
 import { NextFunction, Request, Response } from 'express';
-import { IGenerate, IVerify } from '../interfaces/token.interface';
-import { userService } from '../services/user.service';
-import { Token } from '../utils/token.util';
+import { COOKIE_MAX_AGE } from '../constants';
 import { imageService } from '../services/image.service';
+import { userService } from '../services/user.service';
 import { serverMessage, statusMessage } from '../utils/message.util';
+import { Token } from '../utils/token.util';
 
 class MainController {
   async login(req: Request, res: Response, next: NextFunction) {
     try {
       const { email, password } = req.body;
 
-      const result = await userService.loadUserByEmail(email, password);
+      const { access, refresh } = await userService.loadUserByEmail(
+        email,
+        password
+      );
 
-      res.status(200).send({ body: result });
+      res.cookie(Token.ACCESS, access, {
+        httpOnly: true,
+        maxAge: COOKIE_MAX_AGE,
+      });
+
+      res.cookie(Token.REFRESH, refresh, {
+        httpOnly: true,
+        maxAge: COOKIE_MAX_AGE,
+      });
+
+      res.status(200).send({ body: serverMessage.S004 });
     } catch (e) {
       next(e);
     }
   }
 
-  async refresh(req: Request, res: Response, next: NextFunction) {
+  async logout(req: Request, res: Response, next: NextFunction) {
     try {
-      const authorization = req.headers.authorization;
+      res.clearCookie(Token.ACCESS);
+      res.clearCookie(Token.REFRESH);
 
-      const header: IVerify = {
-        type: Token.REFRESH,
-        authorization,
-      };
-
-      const decoded = Token.verify(header);
-
-      const payload: IGenerate = {
-        type: Token.ACCESS,
-        id: decoded.id,
-        role: decoded.role,
-      };
-
-      const result = {
-        access: Token.generate(payload),
-      };
-
-      res.status(200).send({ body: result });
+      res.status(200).send({ body: serverMessage.S005});
     } catch (e) {
       next(e);
     }
@@ -51,9 +48,9 @@ class MainController {
       const { storeId } = req.params;
 
       const files = req.files;
-      
-      if(files.length === 0) {
-        const msg = `${statusMessage.BAD_REQUEST}+${serverMessage.E001}`
+
+      if (files.length === 0) {
+        const msg = `${statusMessage.BAD_REQUEST}+${serverMessage.E001}`;
         throw new Error(msg);
       }
 

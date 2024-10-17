@@ -2,65 +2,53 @@ import jwt from 'jsonwebtoken';
 import config from '../config';
 import { IGenerate, IDecodeJwt, IVerify } from '../interfaces/token.interface';
 import { serverMessage, statusMessage } from './message.util';
+import { COOKIE_MAX_AGE } from '../constants';
 
 export class Token {
-  static #key = config.jwt.key;
-  static BEARER = 'Bearer';
-  static ACCESS = 'Access';
-  static REFRESH = 'Refresh';
+  private static key = config.jwt.key;
+  public static BEARER = 'Bearer';
+  public static ACCESS = 'Access';
+  public static REFRESH = 'Refresh';
 
-  static generate({ type, id, role }: IGenerate) {
+  // 60 * 60 = 1시간
+  private static ACCESS_EXPIRED = 3600;
+  private static REFRESH_EXPIRED = COOKIE_MAX_AGE;
+
+  public static generate({ type, id, role }: IGenerate) {
     const payload = {
       id,
       role,
-      exp: Math.floor(Date.now() / 1000) + 60 * 30,
+      exp: Math.floor(Date.now() / 1000) + this.ACCESS_EXPIRED,
       jti: this.ACCESS,
     };
 
     if (type === this.REFRESH) {
-      payload.exp = Math.floor(Date.now() / 1000) + 60 * 60;
+      payload.exp = Math.floor(Date.now() / 1000) + this.REFRESH_EXPIRED;
       payload.jti = this.REFRESH;
     }
 
-    return jwt.sign(payload, this.#key!);
+    return jwt.sign(payload, this.key!);
   }
 
-  static #decode(token: string) {
-    let decoded: any;
+  private static decode(token: string): IDecodeJwt {
+    let decoded = <IDecodeJwt>{};
 
     try {
-      decoded = jwt.verify(token, this.#key!);
+      decoded = <IDecodeJwt>jwt.verify(token, this.key!);
+      decoded.isValid = true;
     } catch (e) {
-      return false;
+      decoded.isValid = false;
     }
 
     return decoded;
   }
 
-  static verify({ type, authorization }: IVerify):IDecodeJwt {
-    if (!authorization) {
-      const msg = `${statusMessage.UNAUTHORIZED}+${serverMessage.E002}`
-      throw new Error(msg)
-    }
+  public static verify({ type, token }: IVerify): IDecodeJwt {
+    const decoded = this.decode(token);
 
-    const [tokenType, credential] = authorization.split(' ');
-
-    if (tokenType !== Token.BEARER) {
-      const msg = `${statusMessage.UNAUTHORIZED}+${serverMessage.E002}`
-      throw new Error(msg)
-    }
-
-    const decoded = this.#decode(credential);
-
-    const isValid = decoded
-                 && decoded.id
-                 && decoded.exp
-                 && decoded.jti === type
-                 && decoded.role;
-
-    if (!isValid) {
-      const msg = `${statusMessage.UNAUTHORIZED}+${serverMessage.E002}`
-      throw new Error(msg)
+    if (type === this.REFRESH && !decoded.isValid) {
+      const msg = `${statusMessage.UNAUTHORIZED}+${serverMessage.E002}`;
+      throw new Error(msg);
     }
 
     return decoded;
