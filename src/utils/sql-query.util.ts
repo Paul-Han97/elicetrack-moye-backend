@@ -120,10 +120,12 @@ export const storeQuery = {
       WHERE A.id = ?
         AND D.open_from IS NULL`,
 
-  findById:
+  findByIdWithEmail:
     `SELECT A.id
            ,A.business_registration_number businessRegistrationNumber
            ,A.business_name businessName
+           ,A.name name
+           ,A.address address
            ,A.contact contact
            ,A.seat_count totalSeats
            ,A.table_count numberPerTable

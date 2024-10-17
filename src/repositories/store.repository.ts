@@ -104,7 +104,7 @@ class StoreRepository {
   }
 
   async findByIdWithEmail(id: number) {
-    const sql = storeQuery.findById;
+    const sql = storeQuery.findByIdWithEmail;
     return await repository.query(sql, [id]);
   }
 
