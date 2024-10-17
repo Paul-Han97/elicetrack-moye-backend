@@ -88,15 +88,6 @@
 
 #### `GET /stores/:id/reservations`
 
-- **request header**
-
-```json
-{
-  // authorization = {Access Token}
-  "authorization": "Bearer eyJhbGciOiJIUz...oOnz2pX1x6bb-C6A"
-}
-```
-
 - **response**
 
 ```json
@@ -149,15 +140,6 @@
 ### 한 달 예약 조회 - 검색
 
 #### `GET /stores/:id/reservations?skip=0`
-
-- **request header**
-
-```json
-{
-  // authorization = {Access Token}
-  "authorization": "Bearer eyJhbGciOiJIUz...oOnz2pX1x6bb-C6A"
-}
-```
 
 - **response**
 
@@ -222,15 +204,6 @@
 
 #### `GET /stores/:id/reservations?search=0103333`
 
-- **request header**
-
-```json
-{
-  // authorization = {Access Token}
-  "authorization": "Bearer eyJhbGciOiJIUz...oOnz2pX1x6bb-C6A"
-}
-```
-
 - **response**
 
 ```json
@@ -254,15 +227,6 @@
 
 #### `GET /reservations/1/stores?search=리스`
 
-- **request header**
-
-```json
-{
-  // authorization = {Access Token}
-  "authorization": "Bearer eyJhbGciOiJIUz...oOnz2pX1x6bb-C6A"
-}
-```
-
 - **response**
 
 ```json
@@ -285,15 +249,6 @@
 ### 예약 한 건 수정
 
 #### `PUT /reservations/:id`
-
-- **request header**
-
-```json
-{
-  // authorization = {Access Token}
-  "authorization": "Bearer eyJhbGciOiJIUz...oOnz2pX1x6bb-C6A"
-}
-```
 
 - **request**
 
@@ -330,22 +285,12 @@
 
 #### `POST /stores`
 
-- **request header**
-
-```json
-{
-  // authorization = {Access Token}
-  "authorization": "Bearer eyJhbGciOiJIUz...oOnz2pX1x6bb-C6A"
-}
-```
-
 - **request**
 
 ```json
 {
   "businessRegistrationNumber": "123-10-12345",
   "businessName": "테스트(상호명)",
-  "description": "테스트 매장",
   "name": "테스트 매장 이름",
   "address": "서울특별시 송파구 석촌동 163-1",
   "contact": "02-000-2222",
@@ -374,15 +319,7 @@
       "openFrom": "11:00",
       "closeTo": "12:00"
     }
-  ],
-  "closedDay": [
-    "2024-01-25",
-    "2024-03-23",
-    "2024-11-30",
-    "2024-05-23",
-    "2024-10-30"
-  ],
-  "dayOfWeekDay": [1, 6, 7]
+  ]
 }
 ```
 
@@ -398,16 +335,7 @@
 
 #### `GET /stores/:id`
 
-- **request header**
-
-```json
-{
-  // authorization = {Access Token}
-  "authorization": "Bearer eyJhbGciOiJIUz...oOnz2pX1x6bb-C6A"
-}
-```
-
-- **response header**
+- **response**
 
 ```json
 {
@@ -466,21 +394,71 @@
 }
 ```
 
+### 가게 수정
+
+#### `PUT /stores/:id`
+
+- **request**
+
+```json
+{
+  "businessRegistrationNumber": "123-10-12345",
+  "businessName": "테스트(상호명)",
+  "description": "테스트 매장",
+  "name": "테스트 매장 이름",
+  "address": "서울특별시 송파구 석촌동 163-1",
+  "contact": "02-000-2222",
+  "totalSeats": 6,
+  "numberPerTable": 12,
+  "openingHour": [
+    {
+      "type": "평일",
+      "openFrom": "09:30",
+      "closeTo": "18:30"
+    },
+    {
+      "type": "주말",
+      "openFrom": "10:00",
+      "closeTo": "13:00"
+    }
+  ],
+  "breakTime": [
+    {
+      "type": "평일",
+      "openFrom": "13:30",
+      "closeTo": "14:30"
+    },
+    {
+      "type": "주말",
+      "openFrom": "11:00",
+      "closeTo": "12:00"
+    }
+  ],
+  "closedDay": [
+    "2024-01-25",
+    "2024-03-23",
+    "2024-11-30",
+    "2024-05-23",
+    "2024-10-30"
+  ],
+  "dayOfWeekDay": [1, 6, 7]
+}
+```
+
+- **response**
+
+```json
+{
+  "body": "가게 수정이 완료 되었습니다."
+}
+```
+
 ### 이미지 등록
 
 #### `POST /uploads/:storeId`
 
-- **request header**
-
-```json
-{
-  // authorization = {Access Token}
-  "authorization": "Bearer eyJhbGciOiJIUz...oOnz2pX1x6bb-C6A",
-  "Content-Type": "multipart/form-data"
-}
-```
-
 - **request**
+
 ```json
 {
   // 파일
