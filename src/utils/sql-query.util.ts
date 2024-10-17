@@ -58,7 +58,8 @@ export const reservationQuery = {
        INNER JOIN user B ON A.user_id = B.id
        INNER JOIN reservation_state C ON A.reservation_state_id = C.id
       WHERE A.store_id = ?
-        AND B.name LIKE ?`,
+        AND (B.name LIKE ?
+         OR B.name LIKE ?)`,
 
     findUserByPhone:
     `SELECT A.id resrvationId
@@ -73,7 +74,8 @@ export const reservationQuery = {
        INNER JOIN user B ON A.user_id = B.id
        INNER JOIN reservation_state C ON A.reservation_state_id = C.id
       WHERE A.store_id = ?
-        AND B.phone LIKE ?`,
+        AND (B.phone LIKE ?
+         OR B.phone LIKE ?)`,
 };
 
 export const storeQuery = {
