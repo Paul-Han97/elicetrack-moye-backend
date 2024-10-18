@@ -2,11 +2,11 @@
 
 ## 명령어
 
-| 명령어          | 실행 명령                                  |
-| :-------------- | :----------------------------------------- |
-| npm run start   | pm2 start dist/index.js --name back-server |
-| npm run build   | tsc --project tsconfig.json                |
-| npm run dev     | nodemon --exec \"ts-node\" src/index.ts    |
+| 명령어        | 실행 명령                                  |
+| :------------ | :----------------------------------------- |
+| npm run start | pm2 start dist/index.js --name back-server |
+| npm run build | tsc --project tsconfig.json                |
+| npm run dev   | nodemon --exec \"ts-node\" src/index.ts    |
 
 ## error middleware
 
@@ -22,7 +22,7 @@
 
 ### Email로 검색
 
-#### `GET /users?email="ph@elice.com"`
+#### `GET /api/users?email="ph@elice.com"`
 
 - **response**
 
@@ -38,7 +38,7 @@
 
 ### 로그인
 
-#### `POST /login`
+#### `POST /api/login`
 
 - **request**
 
@@ -62,7 +62,7 @@
 
 ### 회원가입
 
-#### `POST /users`
+#### `POST /api/users`
 
 - **request**
 
@@ -85,7 +85,7 @@
 
 ### 하루 예약 조회
 
-#### `GET /stores/:id/reservations`
+#### `GET /api/stores/:id/reservations`
 
 - **response**
 
@@ -138,7 +138,7 @@
 
 ### 한 달 예약 조회 - 검색
 
-#### `GET /stores/:id/reservations?skip=0`
+#### `GET /api/stores/:id/reservations?skip=0`
 
 - **response**
 
@@ -201,7 +201,7 @@
 
 ### 한 달 예약 조회 - 번호 검색
 
-#### `GET /stores/:id/reservations?search=0103333`
+#### `GET /api/stores/:id/reservations?search=0103333`
 
 - **response**
 
@@ -224,7 +224,7 @@
 
 ### 한 달 예약 조회 - 이름 검색
 
-#### `GET /reservations/1/stores?search=리스`
+#### `GET /api/reservations/1/stores?search=리스`
 
 - **response**
 
@@ -247,7 +247,7 @@
 
 ### 예약 한 건 수정
 
-#### `PUT /reservations/:id`
+#### `PUT /api/reservations/:id`
 
 - **request**
 
@@ -282,7 +282,7 @@
 
 ### 가게 등록
 
-#### `POST /stores`
+#### `POST /api/stores`
 
 - **request**
 
@@ -295,6 +295,7 @@
   "contact": "02-000-2222",
   "totalSeats": 6,
   "numberPerTable": 12,
+  "files": "{JPG FILE}",
   "openingHour": [
     {
       "type": "평일",
@@ -332,7 +333,15 @@
 
 ### 가게 조회
 
-#### `GET /stores/:id`
+- **request header**
+
+```json
+{
+  "Content-Type": "multipart/form-data"
+}
+```
+
+#### `GET /api/stores/:id`
 
 - **response**
 
@@ -395,7 +404,15 @@
 
 ### 가게 수정
 
-#### `PUT /stores/:id`
+#### `PUT /api/stores/:id`
+
+- **request header**
+
+```json
+{
+  "Content-Type": "multipart/form-data"
+}
+```
 
 - **request**
 
@@ -409,6 +426,7 @@
   "contact": "02-000-2222",
   "totalSeats": 6,
   "numberPerTable": 12,
+  "files": "{JPG FILE}",
   "openingHour": [
     {
       "type": "평일",
@@ -452,16 +470,40 @@
 }
 ```
 
-### 이미지 등록
+### 이메일 전송
 
-#### `POST /uploads/:storeId`
+#### `POST /api/send-email`
 
 - **request**
 
 ```json
 {
-  // 파일
-  "files": {file}
+  "subject": "제목 테스트 작성",
+  "receiver": "ph@gmail.com",
+  "userName": "김유선",
+  "storeName": "엘리스",
+  "storeStartTime": "16:00",
+  "content": "content"
+}
+```
+
+### 프로필 이미지 수정
+
+#### `PUT /api/users/:id`
+
+- **request header**
+
+```json
+{
+  "Content-Type": "multipart/form-data"
+}
+```
+
+- **request**
+
+```json
+{
+  "files": "{JPG FILE}"
 }
 ```
 
@@ -469,6 +511,8 @@
 
 ```json
 {
-  "body": "가게 등록이 완료 되었습니다."
+  "body": {
+    "message": "프로필 사진 등록이 완료 되었습니다."
+  }
 }
 ```

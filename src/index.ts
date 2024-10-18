@@ -37,4 +37,6 @@ app.use(`${BASE_URL}/reservations`, auth, reservationRouter);
 
 app.use(errorHandler);
 
-app.listen(PORT);
+app.listen(PORT, () => {
+  console.log(`서버가 ${PORT}번 에서 정상적으로 실행 되었습니다.`)
+});

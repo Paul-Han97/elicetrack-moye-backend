@@ -15,6 +15,13 @@ export const config = {
     key: process.env.JWT_KEY,
   },
   baseUrl: process.env.BASE_URL,
+  email: {
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
+    service: process.env.EMAIL_SERVICE,
+    username: process.env.EMAIL_USERNAME,
+    password: process.env.EMAIL_PASSWORD
+  }
 };
 
 checkConfiguration(config);
@@ -30,7 +37,7 @@ function checkConfiguration(data: object | undefined) {
     }
 
     if(value === '' || value === undefined) {
-      throw new Error(`${key} 값이 할당되지 않았습니다.`);
+      throw new Error(key + `값이 할당되지 않았습니다.`);
     }
   }
 }
