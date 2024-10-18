@@ -1,18 +1,26 @@
-import { CREDENTIAL_TYPE, ROLE_TYPE } from '../constants';
+import { CREDENTIAL_TYPE, ROLE_TYPE, STATIC_PATH, STORE_PATH, URL_SEP, USER_PATH } from '../constants';
 import { CredentialType } from '../entities/credential-type.entity';
 import { Credential } from '../entities/credential.entity';
+import { ImageUser } from '../entities/image-user.entity';
+import { Image } from '../entities/image.entity';
 import { Role } from '../entities/role.entity';
 import { UserCredential } from '../entities/user-credential.entity';
 import { User } from '../entities/user.entity';
 import { IGenerate } from '../interfaces/token.interface';
-import { ISignup, IUser } from '../interfaces/user.interface';
+import {
+  ICreateOne,
+  IDeleteOne,
+  ISignup,
+  IUser,
+} from '../interfaces/user.interface';
+import { imageUserRepository } from '../repositories/image-user.repository';
 import { userRepository } from '../repositories/user.repository';
 import { Encrypt } from '../utils/encrypt.util';
 import { serverMessage, statusMessage } from '../utils/message.util';
 import { Token } from '../utils/token.util';
 
 class UserService {
-  async findByEmail(email:string) {
+  async findByEmail(email: string) {
     return await userRepository.findByEmail(email);
   }
 
@@ -46,14 +54,14 @@ class UserService {
       access,
       refresh,
     };
-    
+
     return result;
   }
 
-  async signup({email, name, phone, password}:IUser) {
+  async signup({ email, name, phone, password }: IUser) {
     const hasUser = await userRepository.findByEmail(email);
 
-    if(hasUser) {
+    if (hasUser) {
       const msg = `${statusMessage.BAD_REQUEST}+${serverMessage.E006}`;
       throw new Error(msg);
     }
@@ -64,9 +72,9 @@ class UserService {
     user.phone = phone;
 
     const credentialType = new CredentialType();
-    credentialType.id = CREDENTIAL_TYPE.LOCAL_ID
+    credentialType.id = CREDENTIAL_TYPE.LOCAL_ID;
 
-    const role =  new Role();
+    const role = new Role();
     role.id = ROLE_TYPE.MANAGER_ID;
 
     const credential = new Credential();
@@ -78,13 +86,60 @@ class UserService {
     userCredential.user = user;
     userCredential.credential = credential;
 
-    const signupDto:ISignup = {
+    const signupDto: ISignup = {
       user,
       credential,
-      userCredential
-    }
+      userCredential,
+    };
 
     const result = userRepository.signup(signupDto);
+
+    return result;
+  }
+
+  async deleteAndInsertImage(userDto: IUser) {
+    const user = await userRepository.findById(userDto.id);
+
+    if (!user) {
+      const msg = `${statusMessage.NOT_FOUND}+${serverMessage.E003}`;
+      throw new Error(msg);
+    }
+
+    const createOneDto = <ICreateOne>{};
+    const deleteOneDto = <IDeleteOne>{};
+
+    const imageUser: ImageUser[] = await imageUserRepository.findByUser(user);
+    const image: Image[] = await userRepository.findImageById(user.id);
+
+    for(let i = 0; i < imageUser.length; i++) {
+      deleteOneDto.imageUser = imageUser[i];
+    }
+
+    for(let i = 0; i < image.length; i++) {
+      deleteOneDto.image = image[i];
+    }
+
+    const newImage = new Image();
+    newImage.registeredUser = user.id;
+    newImage.updatedUser = user.id;
+    newImage.url = STATIC_PATH + URL_SEP + USER_PATH + URL_SEP + userDto.imageUrl;
+    
+    const newImageUser = new ImageUser();
+    newImageUser.isPrimary = true;
+    newImageUser.user = user;
+    newImageUser.image = newImage;
+    newImageUser.registeredUser = user.id;
+    newImageUser.updatedUser = user.id;
+    
+    user.updatedUser = user.id;
+    createOneDto.user = user;
+    createOneDto.image = newImage;
+    createOneDto.imageUser = newImageUser;
+
+    const result = userRepository.deleteAndInsertImage({
+      createOneDto,
+      deleteOneDto,
+    });
 
     return result;
   }

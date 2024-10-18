@@ -112,7 +112,7 @@ export const storeQuery = {
     INNER JOIN day C ON C.id = B.day_id
     INNER JOIN opening_hour D ON D.store_default_opening_hour_id = B.id
    WHERE A.id = ?
-     AND C.id BETWEEN 2 AND 6 `,
+     AND C.id BETWEEN 2 AND 6`,
 
    findClosedDayById:
    `SELECT DATE_FORMAT(B.close_to, '%Y-%m-%d') ymd
@@ -160,4 +160,14 @@ export const storeQuery = {
        INNER JOIN image_store B ON A.id = B.store_id 
        INNER JOIN image C ON B.image_id = C.id 
       WHERE A.id = ?`,
+}
+
+export const userQuery = {
+  findImageById:
+    `SELECT C.id id
+           ,C.url url
+       FROM user A
+       INNER JOIN image_user B ON A.id = B.user_id 
+       INNER JOIN image C ON B.image_id = C.id 
+      WHERE A.id = ?`
 }
