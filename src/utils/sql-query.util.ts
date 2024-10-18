@@ -99,7 +99,7 @@ export const storeQuery = {
      INNER JOIN store_default_opening_hour B ON B.store_id = A.id 
      INNER JOIN day C ON C.id = B.day_id
      INNER JOIN opening_hour D ON D.store_default_opening_hour_id = B.id
-    WHERE A.id = 20
+    WHERE A.id = ?
       AND C.id IN (1, 7)
   UNION ALL
   SELECT '평일' type
@@ -111,7 +111,7 @@ export const storeQuery = {
     INNER JOIN store_default_opening_hour B ON B.store_id = A.id 
     INNER JOIN day C ON C.id = B.day_id
     INNER JOIN opening_hour D ON D.store_default_opening_hour_id = B.id
-   WHERE A.id = 20
+   WHERE A.id = ?
      AND C.id BETWEEN 2 AND 6 `,
 
    findClosedDayById:
