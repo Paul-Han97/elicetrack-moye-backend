@@ -168,7 +168,7 @@ class StoreRepository {
 
   async findOpeningHourById(id: number) {
     const sql = storeQuery.findOpeningHourById;
-    return await repository.query(sql, [id]);
+    return await repository.query(sql, [id, id]);
   }
 
   async findClosedDayById(id: number) {
