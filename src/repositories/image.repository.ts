@@ -16,11 +16,11 @@ class ImageRepository {
     const manager = queryRunner.manager;
 
     try {
-      for(let i = 0; i < createOneDto.image.length; i++) {
+      for (let i = 0; i < createOneDto.image.length; i++) {
         await manager.getRepository(Image).save(createOneDto.image[i]);
       }
 
-      for(let i = 0; i < createOneDto.imageStore.length; i++) {
+      for (let i = 0; i < createOneDto.imageStore.length; i++) {
         await manager.getRepository(ImageStore).save(createOneDto.imageStore[i]);
       }
 
@@ -35,6 +35,7 @@ class ImageRepository {
 
     return serverMessage.S002;
   }
+
 }
 
 export const imageRepository = new ImageRepository();

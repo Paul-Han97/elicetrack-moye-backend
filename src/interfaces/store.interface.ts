@@ -1,3 +1,5 @@
+import { ImageStore } from '../entities/image-store.entity';
+import { Image } from '../entities/image.entity';
 import { OpeningHour } from '../entities/opening-hour.entity';
 import { StoreDefaultOpeningHour } from '../entities/store-default-opening-hour.entity';
 import { StoreOpeningHourOverride } from '../entities/store-opening-hour-override.entity';
@@ -19,6 +21,7 @@ export interface IStore {
   contact: string;
   totalSeats: number;
   numberPerTable: number;
+  url: string[];
   afterBreakTime: IOpeningHour[];
   openingHour: IOpeningHour[];
   closedDay: string[];
@@ -30,6 +33,8 @@ export interface ICreateOne {
   storeOpeningHourOverride: StoreOpeningHourOverride[];
   storeDefaultOpeningHour: StoreDefaultOpeningHour[];
   openingHour: OpeningHour[];
+  imageStore: ImageStore[];
+  image: Image[];
 }
 
 export interface IDeleteOne {
@@ -37,6 +42,8 @@ export interface IDeleteOne {
   storeOpeningHourOverride: StoreOpeningHourOverride[];
   storeDefaultOpeningHour: StoreDefaultOpeningHour[];
   openingHour: OpeningHour[];
+  imageStore: ImageStore[];
+  image: Image[];
 }
 
 export interface IFindMonthlyReservationByStoreId {

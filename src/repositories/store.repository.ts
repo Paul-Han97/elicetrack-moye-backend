@@ -1,9 +1,13 @@
+import { STATIC_PATH, URL_SEP } from '../constants';
 import { AppDataSource } from '../db/datasource';
+import { ImageStore } from '../entities/image-store.entity';
+import { Image } from '../entities/image.entity';
 import { OpeningHour } from '../entities/opening-hour.entity';
 import { StoreDefaultOpeningHour } from '../entities/store-default-opening-hour.entity';
 import { StoreOpeningHourOverride } from '../entities/store-opening-hour-override.entity';
 import { Store } from '../entities/store.entity';
 import { ICreateOne, IDeleteOne } from '../interfaces/store.interface';
+import { fileUtil } from '../utils/file.util';
 import { statusMessage, serverMessage } from '../utils/message.util';
 import { storeQuery } from '../utils/sql-query.util';
 
@@ -18,20 +22,35 @@ class StoreRepository {
 
     const manager = queryRunner.manager;
 
-    let newStore;
     try {
-      newStore = await manager.getRepository(Store).save(createOneDto.store);
+      await manager.getRepository(Store).save(createOneDto.store);
+
+      for (let i = 0; i < createOneDto.image.length; i++) {
+        await manager.getRepository(Image).save(createOneDto.image[i]);
+      }
+
+      for (let i = 0; i < createOneDto.imageStore.length; i++) {
+        await manager
+          .getRepository(ImageStore)
+          .save(createOneDto.imageStore[i]);
+      }
 
       for (let i = 0; i < createOneDto.storeOpeningHourOverride.length; i++) {
-        await manager.getRepository(StoreOpeningHourOverride).save(createOneDto.storeOpeningHourOverride[i]);
+        await manager
+          .getRepository(StoreOpeningHourOverride)
+          .save(createOneDto.storeOpeningHourOverride[i]);
       }
 
       for (let i = 0; i < createOneDto.storeDefaultOpeningHour.length; i++) {
-        await manager.getRepository(StoreDefaultOpeningHour).save(createOneDto.storeDefaultOpeningHour[i]);
+        await manager
+          .getRepository(StoreDefaultOpeningHour)
+          .save(createOneDto.storeDefaultOpeningHour[i]);
       }
 
       for (let i = 0; i < createOneDto.openingHour.length; i++) {
-        await manager.getRepository(OpeningHour).save(createOneDto.openingHour[i]);
+        await manager
+          .getRepository(OpeningHour)
+          .save(createOneDto.openingHour[i]);
       }
 
       await queryRunner.commitTransaction();
@@ -44,14 +63,19 @@ class StoreRepository {
     }
 
     const result = {
-      id: newStore.id,
       message: serverMessage.S002,
     };
 
     return result;
   }
 
-  async deleteAndCreate({ createOneDto, deleteOneDto }: { createOneDto: ICreateOne; deleteOneDto: IDeleteOne }) {
+  async deleteAndCreate({
+    createOneDto,
+    deleteOneDto,
+  }: {
+    createOneDto: ICreateOne;
+    deleteOneDto: IDeleteOne;
+  }) {
     const queryRunner = AppDataSource.createQueryRunner();
 
     await queryRunner.connect();
@@ -62,24 +86,58 @@ class StoreRepository {
     try {
       await manager.getRepository(Store).save(createOneDto.store);
 
+      for (let i = 0; i < deleteOneDto.imageStore.length; i++) {
+        await manager
+          .getRepository(ImageStore)
+          .delete({ id: deleteOneDto.imageStore[i].id });
+      }
+
+      for (let i = 0; i < deleteOneDto.image.length; i++) {
+        const separator = STATIC_PATH + URL_SEP;
+        const url = deleteOneDto.image[i].url.split(separator)[1];
+        const dir = fileUtil.join(fileUtil.cwd, url);
+        fileUtil.remove(dir);
+        await manager
+          .getRepository(Image)
+          .delete({ id: deleteOneDto.image[i].id });
+      }
+
       for (let i = 0; i < deleteOneDto.storeOpeningHourOverride.length; i++) {
-        await manager.getRepository(StoreOpeningHourOverride).delete({ id: deleteOneDto.storeOpeningHourOverride[i].id });
+        await manager
+          .getRepository(StoreOpeningHourOverride)
+          .delete({ id: deleteOneDto.storeOpeningHourOverride[i].id });
       }
 
       for (let i = 0; i < deleteOneDto.openingHour.length; i++) {
-        await manager.getRepository(OpeningHour).delete({ id: deleteOneDto.openingHour[i].id });
+        await manager
+          .getRepository(OpeningHour)
+          .delete({ id: deleteOneDto.openingHour[i].id });
+      }
+
+      for (let i = 0; i < createOneDto.image.length; i++) {
+        await manager.getRepository(Image).save(createOneDto.image);
+      }
+
+      for (let i = 0; i < createOneDto.imageStore.length; i++) {
+        await manager.getRepository(ImageStore).save(createOneDto.imageStore);
       }
 
       for (let i = 0; i < createOneDto.storeOpeningHourOverride.length; i++) {
-        await manager.getRepository(StoreOpeningHourOverride).save(createOneDto.storeOpeningHourOverride[i]);
+        await manager
+          .getRepository(StoreOpeningHourOverride)
+          .save(createOneDto.storeOpeningHourOverride[i]);
       }
 
       for (let i = 0; i < createOneDto.storeDefaultOpeningHour.length; i++) {
-        await manager.getRepository(StoreDefaultOpeningHour).save(createOneDto.storeDefaultOpeningHour[i]);
+        await manager
+          .getRepository(StoreDefaultOpeningHour)
+          .save(createOneDto.storeDefaultOpeningHour[i]);
       }
 
       for (let i = 0; i < createOneDto.openingHour.length; i++) {
-        await manager.getRepository(OpeningHour).save(createOneDto.openingHour[i]);
+        await manager
+          .getRepository(OpeningHour)
+          .save(createOneDto.openingHour[i]);
       }
 
       await queryRunner.commitTransaction();
@@ -123,7 +181,12 @@ class StoreRepository {
     return await repository.query(sql, [id]);
   }
 
-  async findImageById(id: number) {
+  async findFormattedImageById(id: number) {
+    const sql = storeQuery.findFormattedImageById;
+    return await repository.query(sql, [id]);
+  }
+
+  async findImageById(id: number): Promise<Image[]> {
     const sql = storeQuery.findImageById;
     return await repository.query(sql, [id]);
   }

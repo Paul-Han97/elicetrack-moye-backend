@@ -5,9 +5,33 @@ import { storeService } from '../services/store.service';
 import { serverMessage, statusMessage } from '../utils/message.util';
 
 class StoreController {
-  async createOne(req: Request, res: Response, next: NextFunction) {
+  async createOne(req: any, res: Response, next: NextFunction) {
     try {
       const storeDto = req.body;
+      const files: Express.Multer.File[] = req.files;
+
+      if (files.length > 0) {
+        storeDto.url = files.map((file) => {
+          return file.filename;
+        });
+      }
+
+      if (storeDto.openingHour) {
+        storeDto.openingHour = JSON.parse(storeDto.openingHour);
+      }
+
+      if (storeDto.breakTime) {
+        storeDto.breakTime = JSON.parse(storeDto.breakTime);
+      }
+
+      if (storeDto.closedDay) {
+        storeDto.closedDay = JSON.parse(storeDto.closedDay);
+      }
+
+      if (storeDto.dayOfWeekDay) {
+        storeDto.dayOfWeekDay = JSON.parse(storeDto.dayOfWeekDay);
+      }
+
       const openingHour: IOpeningHour[] = [];
       const afterOpeningHour: IOpeningHour[] = [];
 
@@ -46,21 +70,41 @@ class StoreController {
 
       storeDto.userId = res.locals.user.id;
       const result = await storeService.createOne(storeDto);
-
       res.status(201).send({ body: result });
     } catch (e) {
       next(e);
     }
   }
 
-  async updateOne(
-    req: Request<{ id: number }>,
-    res: Response,
-    next: NextFunction
-  ) {
+  async updateOne(req: any, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
       const storeDto = req.body;
+
+      const files: Express.Multer.File[] = req.files;
+
+      if (files.length > 0) {
+        storeDto.url = files.map((file) => {
+          return file.filename;
+        });
+      }
+
+      if (storeDto.openingHour) {
+        storeDto.openingHour = JSON.parse(storeDto.openingHour);
+      }
+
+      if (storeDto.breakTime) {
+        storeDto.breakTime = JSON.parse(storeDto.breakTime);
+      }
+
+      if (storeDto.closedDay) {
+        storeDto.closedDay = JSON.parse(storeDto.closedDay);
+      }
+
+      if (storeDto.dayOfWeekDay) {
+        storeDto.dayOfWeekDay = JSON.parse(storeDto.dayOfWeekDay);
+      }
+
       const openingHour: IOpeningHour[] = [];
       const afterOpeningHour: IOpeningHour[] = [];
 

@@ -5,9 +5,7 @@ import { StoreDefaultOpeningHour } from '../entities/store-default-opening-hour.
 const repository = AppDataSource.getRepository(OpeningHour);
 
 class OpeningHourRepository {
-  async findByStoreDefaultOpeningHour(
-    storeDefaultOpeningHour: StoreDefaultOpeningHour
-  ) {
+  async findByStoreDefaultOpeningHour(storeDefaultOpeningHour: StoreDefaultOpeningHour) {
     return await repository
       .createQueryBuilder('A')
       .where('A.store_default_opening_hour_id = :storeDefaultOpeningHourId', {
