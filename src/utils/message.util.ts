@@ -9,6 +9,7 @@ export const statusMessage = {
   NOT_FOUND: 'Not Found',
   INTERNAL_SERVER_ERROR: 'Internal Server Error',
   HTTP_VERSION_NOT_SUPPORTED: 'HTTP Version Not Supported',
+  UNSUPPORTED_MEDIA_TYPE: 'Unsupported Media Type'
 };
 
 export const serverMessage = {
