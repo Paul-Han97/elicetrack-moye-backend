@@ -1,46 +1,48 @@
 import path from 'path';
-import fs, { mkdirSync, readdir, readdirSync } from 'fs';
+import { mkdirSync, readdirSync, unlinkSync } from 'fs';
 
 export class FileUtil {
   private readonly PRIVATE = 'private';
-  private root = process.cwd();
+  private readonly root = process.cwd();
 
   public readonly JPG = '.jpg';
+  public readonly cwd = path.join(this.root, this.PRIVATE);
 
   constructor() {
-    this.mkdir(this.PRIVATE);
-    this.root = path.join(this.root, this.PRIVATE);
+    this.mkdir(this.cwd);
   }
 
   mkdir(dir: string) {
-    const workingDir = path.join(this.root, dir);
     try {
-      readdirSync(workingDir);
+      readdirSync(dir);
     } catch (e) {
-      mkdirSync(workingDir);
+      mkdirSync(dir);
     }
   }
 
   getFileCount(dir: string) {
     let count = 0;
-    const workingDir = path.join(this.root, dir);
     
     try {
-      count = readdirSync(workingDir).length;
+      count = readdirSync(dir).length;
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
 
     return count;
+  }
+
+  join(src: string, target: string) {
+      return path.join(src, target);
   }
 
   getFileExtname(file: Express.Multer.File) {
     return path.extname(file.originalname);
   }
 
-  getWorkingDir(dir: string) {
-    return path.join(this.root, dir);
-  }
+  remove(filePath: string) {
+    unlinkSync(filePath);
+  } 
 }
 
 export const fileUtil = new FileUtil();
