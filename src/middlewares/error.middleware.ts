@@ -14,6 +14,7 @@ messageMap.set(statusMessage.BAD_REQUEST, 400);
 messageMap.set(statusMessage.UNAUTHORIZED, 401);
 messageMap.set(statusMessage.FORBIDDEN, 403);
 messageMap.set(statusMessage.NOT_FOUND, 404);
+messageMap.set(statusMessage.UNSUPPORTED_MEDIA_TYPE, 415);
 
 // Server error responses
 messageMap.set(statusMessage.INTERNAL_SERVER_ERROR, 500);
