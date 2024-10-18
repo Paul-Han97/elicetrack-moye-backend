@@ -3,6 +3,7 @@ import { Common } from './common.abstract';
 import { Reservation } from './reservation.entity';
 import { Store } from './store.entity';
 import { UserCredential } from './user-credential.entity';
+import { ImageUser } from './image-user.entity';
 
 @Entity()
 export class User extends Common {
@@ -23,4 +24,7 @@ export class User extends Common {
 
   @OneToMany(() => UserCredential, (userCredential) => userCredential.user)
   userCredential: UserCredential;
+
+  @OneToMany(() => ImageUser, (imageUser) => imageUser.user)
+  imageUser: ImageUser;
 }
