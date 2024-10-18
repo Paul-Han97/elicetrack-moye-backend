@@ -1,5 +1,7 @@
-import { RESERVATION_TYPE, WEEK, WEEK_TYPE } from '../constants';
+import { RESERVATION_TYPE, STATIC_PATH, STORE_PATH, URL_SEP, WEEK, WEEK_TYPE } from '../constants';
 import { Day } from '../entities/day.entity';
+import { ImageStore } from '../entities/image-store.entity';
+import { Image } from '../entities/image.entity';
 import { OpeningHour } from '../entities/opening-hour.entity';
 import { StoreDefaultOpeningHour } from '../entities/store-default-opening-hour.entity';
 import { StoreOpeningHourOverride } from '../entities/store-opening-hour-override.entity';
@@ -14,6 +16,8 @@ import {
   IFindUserByPhone,
   IStore,
 } from '../interfaces/store.interface';
+import { imageStoreRepository } from '../repositories/image-store.repository';
+import { imageRepository } from '../repositories/image.repository';
 import { openingHourRepository } from '../repositories/opening-hour.repository';
 import { reservationRepository } from '../repositories/reservation.repository';
 import { storeDefaultOpeningHourRepository } from '../repositories/store-default-opening-hour.repository';
@@ -45,7 +49,27 @@ class StoreService {
       storeOpeningHourOverride: [],
       storeDefaultOpeningHour: [],
       openingHour: [],
+      imageStore: [],
+      image: [],
     };
+
+    if(params.url) {
+      for(let i = 0; i < params.url.length; i++) {
+        const image = new Image();
+        image.url = STATIC_PATH + URL_SEP + STORE_PATH + URL_SEP + params.url[i];
+        image.registeredUser = user.id;
+        image.updatedUser = user.id;
+
+        const imageStore = new ImageStore();
+        imageStore.image = image;
+        imageStore.store = store;
+        imageStore.registeredUser = user.id;
+        imageStore.updatedUser = user.id;
+
+        createOneDto.image.push(image);
+        createOneDto.imageStore.push(imageStore);
+      }
+    }
 
     if (params.closedDay) {
       for (let i = 0; i < params.closedDay.length; i++) {
@@ -121,7 +145,6 @@ class StoreService {
     store.contact = params.contact;
     store.seatCount = params.totalSeats;
     store.tableCount = params.numberPerTable;
-    store.registeredUser = params.userId;
     store.updatedUser = params.userId;
 
     const createOneDto: ICreateOne = {
@@ -129,6 +152,8 @@ class StoreService {
       storeOpeningHourOverride: [],
       storeDefaultOpeningHour: [],
       openingHour: [],
+      imageStore: [],
+      image: [],
     };
 
     const deleteOneDto: IDeleteOne = {
@@ -136,11 +161,31 @@ class StoreService {
       storeOpeningHourOverride: [],
       storeDefaultOpeningHour: [],
       openingHour: [],
+      imageStore: [],
+      image: [],
     };
-    
-    deleteOneDto.storeOpeningHourOverride = await storeOpeningHourOverrideRepository.findByStore(store);
 
-    // 삭제 안하고 update
+    if(params.url) {
+      for(let i = 0; i < params.url.length; i++) {
+        const image = new Image();
+        image.url = STATIC_PATH + URL_SEP + STORE_PATH + URL_SEP + params.url[i];
+        image.registeredUser = user.id;
+        image.updatedUser = user.id;
+
+        const imageStore = new ImageStore();
+        imageStore.image = image;
+        imageStore.store = store;
+        imageStore.registeredUser = user.id;
+        imageStore.updatedUser = user.id;
+
+        createOneDto.image.push(image);
+        createOneDto.imageStore.push(imageStore);
+      }
+    }
+    
+    deleteOneDto.image = await storeRepository.findImageById(store.id);
+    deleteOneDto.imageStore = await imageStoreRepository.findByStore(store);
+    deleteOneDto.storeOpeningHourOverride = await storeOpeningHourOverrideRepository.findByStore(store);
     createOneDto.storeDefaultOpeningHour = await storeDefaultOpeningHourRepository.findByStore(store);
 
     for (let i = 0; i < createOneDto.storeDefaultOpeningHour.length; i++) {
@@ -203,7 +248,7 @@ class StoreService {
     const openingHour = await storeRepository.findOpeningHourById(id);
     const closedDay = await storeRepository.findClosedDayById(id);
     const regularHoliday = await storeRepository.findRegularHolidayById(id);
-    const image = await storeRepository.findImageById(id);
+    const image = await storeRepository.findFormattedImageById(id);
 
     const result = {
       openingHour,

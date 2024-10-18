@@ -1,6 +1,6 @@
 import cors from 'cors';
 import express from 'express';
-import config from './config';
+import { config } from './config';
 import { dbConnect } from './db/datasource';
 import { auth } from './middlewares/auth.middleware';
 import { errorHandler } from './middlewares/error.middleware';
@@ -10,7 +10,10 @@ import { storeRouter } from './routers/store.router';
 import { userRouter } from './routers/user.router';
 import cookieParser from 'cookie-parser';
 
+
 const PORT = config.server.port;
+const BASE_URL = config.baseUrl;
+
 const app = express();
 
 app.use(
@@ -25,12 +28,12 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.use('/static', auth, express.static('private'));
+app.use(`${BASE_URL}/static`, auth, express.static('private'));
 
-app.use('/', mainRouter);
-app.use('/users', userRouter);
-app.use('/stores', auth, storeRouter);
-app.use('/reservations', auth, reservationRouter);
+app.use(`${BASE_URL}`, mainRouter);
+app.use(`${BASE_URL}/users`, userRouter);
+app.use(`${BASE_URL}/stores`, auth, storeRouter);
+app.use(`${BASE_URL}/reservations`, auth, reservationRouter);
 
 app.use(errorHandler);
 

@@ -36,35 +36,7 @@ class MainController {
       res.clearCookie(Token.ACCESS);
       res.clearCookie(Token.REFRESH);
 
-      res.status(200).send({ body: serverMessage.S005});
-    } catch (e) {
-      next(e);
-    }
-  }
-
-  async uploads(req: any, res: Response, next: NextFunction) {
-    try {
-      const userId = res.locals.user.id;
-      const { storeId } = req.params;
-
-      const files = req.files;
-
-      if (files.length === 0) {
-        const msg = `${statusMessage.BAD_REQUEST}+${serverMessage.E001}`;
-        throw new Error(msg);
-      }
-
-      const filenames: string[] = files.map((data: { filename: string }) => {
-        return data.filename;
-      });
-
-      const result = await imageService.createOne({
-        userId,
-        storeId,
-        filenames,
-      });
-
-      res.status(201).send({ body: result });
+      res.status(200).send({ body: serverMessage.S005 });
     } catch (e) {
       next(e);
     }

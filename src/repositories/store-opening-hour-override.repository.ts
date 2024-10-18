@@ -6,7 +6,6 @@ const repository = AppDataSource.getRepository(StoreOpeningHourOverride);
 
 class StoreOpeningHourOverrideRepository {
   async findByStore(store: Store) {
-    console.log(store);
     return await repository
       .createQueryBuilder('A')
       .where('A.store_id = :storeId', { storeId: store.id })

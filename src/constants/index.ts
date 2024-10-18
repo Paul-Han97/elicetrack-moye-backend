@@ -44,3 +44,7 @@ export const URL_SEP = '/';
 
 // 60 * 60 * 24 = (1일, 24시간)
 export const COOKIE_MAX_AGE = 86400;
+
+export const STORE_PATH = 'stores';
+
+export const USER_PATH = 'users';
