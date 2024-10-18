@@ -17,7 +17,6 @@ import {
   IStore,
 } from '../interfaces/store.interface';
 import { imageStoreRepository } from '../repositories/image-store.repository';
-import { imageRepository } from '../repositories/image.repository';
 import { openingHourRepository } from '../repositories/opening-hour.repository';
 import { reservationRepository } from '../repositories/reservation.repository';
 import { storeDefaultOpeningHourRepository } from '../repositories/store-default-opening-hour.repository';

@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { COOKIE_MAX_AGE } from '../constants';
-import { imageService } from '../services/image.service';
 import { userService } from '../services/user.service';
-import { serverMessage, statusMessage } from '../utils/message.util';
+import { serverMessage } from '../utils/message.util';
 import { Token } from '../utils/token.util';
 
 class MainController {
