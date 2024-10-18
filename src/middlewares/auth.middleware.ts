@@ -15,8 +15,8 @@ export async function auth(
     const access = req.cookies.Access;
     const refresh = req.cookies.Refresh;
 
-    if(!access || !refresh) {
-      const msg = `${statusMessage.BAD_REQUEST}+${serverMessage.E001}`
+    if (!access || !refresh) {
+      const msg = `${statusMessage.BAD_REQUEST}+${serverMessage.E001}`;
       throw new Error(msg);
     }
 
