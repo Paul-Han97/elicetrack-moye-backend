@@ -90,19 +90,29 @@ export const storeQuery = {
       AND D.id = DAYOFWEEK(NOW())`,
 
   findOpeningHourById:
-  `SELECT IF(C.id = 1, '평일', '주말') type
-         ,MIN(D.open_from) openFrom
-         ,MAX(D.close_to) closeTo
+  `SELECT '주말' type
+ 			   ,MIN(D.open_from) openFrom
+ 			   ,MAX(D.close_to) closeTo
          ,MIN(D.close_to) startBreakTime
          ,MAX(D.open_from) endBreakTime
      FROM store A
      INNER JOIN store_default_opening_hour B ON B.store_id = A.id 
-     INNER JOIN day C ON B.day_id = C.id
-     INNER JOIN opening_hour D ON B.id = D.store_default_opening_hour_id
-    WHERE A.id = ?
-      AND D.open_from IS NOT NULL
-      AND C.id IN (1, 2)
-   GROUP BY C.id`,
+     INNER JOIN day C ON C.id = B.day_id
+     INNER JOIN opening_hour D ON D.store_default_opening_hour_id = B.id
+    WHERE A.id = 20
+      AND C.id IN (1, 7)
+  UNION ALL
+  SELECT '평일' type
+        ,MIN(D.open_from) openFrom
+        ,MAX(D.close_to) closeTo
+        ,MIN(D.close_to) startBreakTime
+        ,MAX(D.open_from) endBreakTime
+    FROM store A
+    INNER JOIN store_default_opening_hour B ON B.store_id = A.id 
+    INNER JOIN day C ON C.id = B.day_id
+    INNER JOIN opening_hour D ON D.store_default_opening_hour_id = B.id
+   WHERE A.id = 20
+     AND C.id BETWEEN 2 AND 6 `,
 
    findClosedDayById:
    `SELECT DATE_FORMAT(B.close_to, '%Y-%m-%d') ymd
