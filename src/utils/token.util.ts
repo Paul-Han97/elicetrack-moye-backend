@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import config from '../config';
+import { config } from '../config';
 import { IGenerate, IDecodeJwt, IVerify } from '../interfaces/token.interface';
 import { serverMessage, statusMessage } from './message.util';
 import { COOKIE_MAX_AGE } from '../constants';

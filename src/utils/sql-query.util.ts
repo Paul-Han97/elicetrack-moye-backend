@@ -135,11 +135,19 @@ export const storeQuery = {
        INNER JOIN user B ON A.user_id = B.id
       WHERE A.id = ?`,
   
-  findImageById:
+  findFormattedImageById:
     `SELECT IF(B.is_primary = TRUE, 'TRUE', 'FALSE') isPrimary
 	         ,C.url url
        FROM store A
        INNER JOIN image_store B ON A.id = B.store_id 
        INNER JOIN image C ON B.image_id = C.id 
-      WHERE A.id = ?`
+      WHERE A.id = ?`,
+  
+  findImageById:
+    `SELECT C.id id
+           ,C.url url
+       FROM store A
+       INNER JOIN image_store B ON A.id = B.store_id 
+       INNER JOIN image C ON B.image_id = C.id 
+      WHERE A.id = ?`,
 }
