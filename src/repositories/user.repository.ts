@@ -2,6 +2,7 @@ import { STATIC_PATH, URL_SEP } from '../constants';
 import { AppDataSource } from '../db/datasource';
 import { CredentialType } from '../entities/credential-type.entity';
 import { Credential } from '../entities/credential.entity';
+import { ImageStore } from '../entities/image-store.entity';
 import { ImageUser } from '../entities/image-user.entity';
 import { Image } from '../entities/image.entity';
 import { Reservation } from '../entities/reservation.entity';
@@ -34,21 +35,15 @@ class UserRepository {
   async findByIdWithRole(id: number) {
     const sql = await repository
       .createQueryBuilder('A')
-      .leftJoinAndMapOne(
-        'A.userCredential',
-        UserCredential,
-        'B',
-        'A.id = B.user_id'
-      )
-      .leftJoinAndMapOne(
-        'B.credential',
-        Credential,
-        'C',
-        'B.credential_id = C.id'
-      )
+      .leftJoinAndMapOne('A.userCredential', UserCredential, 'B', 'A.id = B.user_id')
+      .leftJoinAndMapOne('B.credential', Credential, 'C', 'B.credential_id = C.id')
       .leftJoinAndMapOne('C.role', Role, 'D', 'C.role_id = D.id')
       .leftJoinAndMapMany('A.store', Store, 'E', 'A.id = E.user_id')
       .leftJoinAndMapMany('A.reservation', Reservation, 'F', 'A.id = F.user_id')
+      .leftJoinAndMapOne('A.imageUser', ImageUser, 'G', 'A.id = G.user_id')
+      .leftJoinAndMapOne('G.image', Image, 'H', 'G.image_id = H.id')
+      .leftJoinAndMapMany('E.imageStore', ImageStore, 'I', 'E.id = I.store_id')
+      .leftJoinAndMapMany('I.image', Image, 'J', 'J.id = I.image_id')
       .where('A.id = :id', { id })
       .getOne();
 
@@ -57,16 +52,7 @@ class UserRepository {
       throw new Error(message);
     }
 
-    const result = {
-      email: sql.email,
-      name: sql.name,
-      phone: sql.phone,
-      role: sql.userCredential.credential.role.type,
-      stores: sql.store,
-      reservations: sql.reservation,
-    };
-
-    return result;
+    return sql;
   }
 
   async loadUserByEmail(email: string) {

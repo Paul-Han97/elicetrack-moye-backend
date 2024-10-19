@@ -20,7 +20,73 @@
 
 ## `HOST localhost:5000`
 
-### Email로 검색
+### 사용자 id로 검색
+
+#### `GET /api/users/:id`
+
+```json
+{
+  "body": {
+    "email": "lmh@elice.com",
+    "name": "엘리스",
+    "phone": "01033334444",
+    "role": "ROLE_MANAGER",
+    "imageUrl": "static/users/1ef8dd40-8f93-6e30-8108-b882deb6587c.jpg",
+    "stores": [
+      {
+        "id": 3,
+        "registeredUser": "1",
+        "registeredDate": "2024-10-19T04:59:00.824Z",
+        "updatedUser": "1",
+        "updatedDate": "2024-10-19T05:00:56.445Z",
+        "businessRegistrationNumber": "123-10-12345",
+        "businessName": "10시 15분 이후(상호명)",
+        "description": "test",
+        "name": "10시 15분 이후 매장 이름",
+        "address": "서울특별시 송파구 석촌동 163-1",
+        "contact": "02-000-2222",
+        "seatCount": 6,
+        "tableCount": 12,
+        "imageStore": [
+          {
+            "id": 1,
+            "registeredUser": "1",
+            "registeredDate": "2024-10-19T04:59:00.837Z",
+            "updatedUser": "1",
+            "updatedDate": "2024-10-19T04:59:00.837Z",
+            "isPrimary": false,
+            "image": [
+              {
+                "id": 26,
+                "registeredUser": "1",
+                "registeredDate": "2024-10-19T04:59:00.833Z",
+                "updatedUser": "1",
+                "updatedDate": "2024-10-19T04:59:00.833Z",
+                "url": "static/stores/1ef8dd6d-af9b-6390-8fd0-1400c56dd1c0.jpg"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "reservations": [
+      {
+        "id": 3,
+        "registeredUser": "ROLE_ADMIN",
+        "registeredDate": "2024-10-18T07:46:22.612Z",
+        "updatedUser": "ROLE_ADMIN",
+        "updatedDate": "2024-10-18T07:46:22.612Z",
+        "description": "예약3",
+        "count": 5,
+        "startTime": "2024-11-05T06:00:00.000Z",
+        "endTime": "2024-11-05T06:50:09.000Z"
+      }
+    ]
+  }
+}
+```
+
+### 사용자 email로 검색
 
 #### `GET /api/users?email="ph@elice.com"`
 
