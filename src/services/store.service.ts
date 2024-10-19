@@ -261,6 +261,10 @@ class StoreService {
     return result;
   }
 
+  async getAllSimpleStoreInformation(skip: number) {
+    return await storeRepository.findAllSimpleInformation(skip);
+  }
+
   async findMonthlyReservationByStoreId({ id, month }: IFindMonthlyReservationByStoreId) {
     const results = await reservationRepository.findMonthlyReservationByStoreId({ id, month });
     const resultMap = new Map();
