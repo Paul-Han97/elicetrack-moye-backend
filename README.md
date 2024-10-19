@@ -397,15 +397,104 @@
 }
 ```
 
-### 가게 조회
+### 가게 모든 정보 간단 조회
 
-- **request header**
+#### `GET /api/stores/?skip=0`
+
+- **request Query String**
 
 ```json
 {
-  "Content-Type": "multipart/form-data"
+  // skip 생략시 default 값 0
+  "skip": 2
 }
 ```
+
+- **response**
+
+```json
+{
+  "body": [
+    {
+      "id": 6,
+      "name": "10시 15분 이후 매장 이름",
+      "contact": "02-000-2222",
+      "seatCount": 6,
+      "tableCount": 12,
+      "weekendOpeningTime": "13:00:00",
+      "weekendCloseingTime": "20:00:00",
+      "weekendStartBreakTime": "16:00:00",
+      "weekendEndBreakTime": "17:00:00",
+      "weekdayOpeningTime": "09:00:00",
+      "weekdayCloseingTime": "20:00:00",
+      "weekdayStartBreakTime": "13:00:00",
+      "weekdayEndBreakTime": "14:00:00"
+    },
+    {
+      "id": 7,
+      "name": "10시 15분 이후 매장 이름",
+      "contact": "02-000-2222",
+      "seatCount": 6,
+      "tableCount": 12,
+      "weekendOpeningTime": "13:00:00",
+      "weekendCloseingTime": "20:00:00",
+      "weekendStartBreakTime": "16:00:00",
+      "weekendEndBreakTime": "17:00:00",
+      "weekdayOpeningTime": "09:00:00",
+      "weekdayCloseingTime": "20:00:00",
+      "weekdayStartBreakTime": "13:00:00",
+      "weekdayEndBreakTime": "14:00:00"
+    },
+    {
+      "id": 8,
+      "name": "10시 15분 이후 매장 이름",
+      "contact": "02-000-2222",
+      "seatCount": 6,
+      "tableCount": 12,
+      "weekendOpeningTime": "13:00:00",
+      "weekendCloseingTime": "20:00:00",
+      "weekendStartBreakTime": "16:00:00",
+      "weekendEndBreakTime": "17:00:00",
+      "weekdayOpeningTime": "09:00:00",
+      "weekdayCloseingTime": "20:00:00",
+      "weekdayStartBreakTime": "13:00:00",
+      "weekdayEndBreakTime": "14:00:00"
+    },
+    {
+      "id": 9,
+      "name": "10시 15분 이후 매장 이름",
+      "contact": "02-000-2222",
+      "seatCount": 6,
+      "tableCount": 12,
+      "weekendOpeningTime": "13:00:00",
+      "weekendCloseingTime": "20:00:00",
+      "weekendStartBreakTime": "16:00:00",
+      "weekendEndBreakTime": "17:00:00",
+      "weekdayOpeningTime": "09:00:00",
+      "weekdayCloseingTime": "20:00:00",
+      "weekdayStartBreakTime": "13:00:00",
+      "weekdayEndBreakTime": "14:00:00"
+    },
+    {
+      "id": 10,
+      "name": "10시 15분 이후 매장 이름",
+      "contact": "02-000-2222",
+      "seatCount": 6,
+      "tableCount": 12,
+      "weekendOpeningTime": "13:00:00",
+      "weekendCloseingTime": "20:00:00",
+      "weekendStartBreakTime": "16:00:00",
+      "weekendEndBreakTime": "17:00:00",
+      "weekdayOpeningTime": "09:00:00",
+      "weekdayCloseingTime": "20:00:00",
+      "weekdayStartBreakTime": "13:00:00",
+      "weekdayEndBreakTime": "14:00:00"
+    }
+  ]
+}
+```
+
+### 가게 모든 정보 조회
 
 #### `GET /api/stores/:id`
 
