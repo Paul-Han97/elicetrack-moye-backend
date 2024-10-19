@@ -27,18 +27,13 @@ class UserService {
   async findByIdWithRole(id: number) {
 
     const user = await userRepository.findByIdWithRole(id);
-    
-    const storeImages = [];
-    if(user?.store?.imageStore){
-      user.store.imageStore
-    }
 
     const result = {
       email: user.email,
       name: user.name,
       phone: user.phone,
       role: user.userCredential.credential.role.type,
-      imageUrl: user.imageUser.image.url,
+      imageUrl: user.imageUser?.image.url,
       stores: user.store,
       reservations: user.reservation,
     };
