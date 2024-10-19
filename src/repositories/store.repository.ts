@@ -1,4 +1,4 @@
-import { STATIC_PATH, URL_SEP } from '../constants';
+import { PAGINATION_LIMIT, STATIC_PATH, URL_SEP } from '../constants';
 import { AppDataSource } from '../db/datasource';
 import { ImageStore } from '../entities/image-store.entity';
 import { Image } from '../entities/image.entity';
@@ -154,6 +154,14 @@ class StoreRepository {
 
   async findById(id: number) {
     return await repository.findOneBy({ id });
+  }
+
+  async findAllSimpleInformation(skip: number) {
+    const left: number = skip * PAGINATION_LIMIT + 1;
+    const right: number = left + 4;
+    const sql = storeQuery.findAll;
+    
+    return await repository.query(sql, [left, right]);
   }
 
   async findTodayOpeningHourById(id: number) {

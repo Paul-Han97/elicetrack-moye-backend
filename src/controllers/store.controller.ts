@@ -167,6 +167,22 @@ class StoreController {
     }
   }
 
+  async getAllSimpleStoreInformation(
+    req: Request<{}, {}, {}, { skip: number }>,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const skip = req.query.skip ?? 0;
+
+      const result = await storeService.getAllSimpleStoreInformation(skip);
+
+      res.status(200).send({ body: result });
+    } catch (e) {
+      next(e);
+    }
+  }
+
   async findByMonthOrToday(
     req: Request<
       { id: number },

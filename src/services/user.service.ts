@@ -25,7 +25,6 @@ class UserService {
   }
 
   async findByIdWithRole(id: number) {
-
     const user = await userRepository.findByIdWithRole(id);
 
     const result = {

@@ -79,6 +79,53 @@ export const reservationQuery = {
 };
 
 export const storeQuery = {
+  findAll:
+  `WITH selected_store AS (
+      SELECT A.id
+        FROM store A
+      WHERE A.id BETWEEN ? AND ?
+   )
+   SELECT A.id id
+         ,A.name name
+         ,A.contact contact
+         ,A.seat_count seatCount
+         ,A.table_count tableCount
+         ,B.weekendOpeningTime weekendOpeningTime
+         ,B.weekendCloseingTime weekendCloseingTime
+         ,B.weekendStartBreakTime weekendStartBreakTime
+         ,B.weekendEndBreakTime weekendEndBreakTime
+         ,C.weekdayOpeningTime weekdayOpeningTime
+         ,C.weekdayCloseingTime weekdayCloseingTime
+         ,C.weekdayStartBreakTime weekdayStartBreakTime
+         ,C.weekdayEndBreakTime weekdayEndBreakTime
+     FROM store A
+         ,(SELECT XA.id id
+                 ,MIN(XD.open_from) weekendOpeningTime
+                 ,MAX(XD.close_to) weekendCloseingTime
+                 ,MIN(XD.close_to) weekendStartBreakTime
+                 ,MAX(XD.open_from) weekendEndBreakTime
+             FROM store XA
+             INNER JOIN store_default_opening_hour XB ON XB.store_id = XA.id 
+             INNER JOIN day XC ON XC.id = XB.day_id
+             INNER JOIN opening_hour XD ON XD.store_default_opening_hour_id = XB.id
+             INNER JOIN selected_store XE ON XE.id = XA.id
+             WHERE XC.id IN (1, 7)
+           GROUP BY XA.id) B
+         ,(SELECT XA.id id 
+                 ,MIN(XD.open_from) weekdayOpeningTime
+                 ,MAX(XD.close_to) weekdayCloseingTime
+                 ,MIN(XD.close_to) weekdayStartBreakTime
+                 ,MAX(XD.open_from) weekdayEndBreakTime
+             FROM store XA
+             INNER JOIN store_default_opening_hour XB ON XB.store_id = XA.id 
+             INNER JOIN day XC ON XC.id = XB.day_id
+             INNER JOIN opening_hour XD ON XD.store_default_opening_hour_id = XB.id
+             INNER JOIN selected_store XE ON XE.id = XA.id
+           WHERE XC.id BETWEEN 2 AND 6
+           GROUP BY XA.id) C
+    WHERE A.id = B.id
+      AND B.id = C.id`,
+
   findTodayOpeningHourById:
   `SELECT MIN(C.open_from) open
          ,MAX(C.close_to) close

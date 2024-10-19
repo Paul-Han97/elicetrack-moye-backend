@@ -4,6 +4,7 @@ import upload from '../middlewares/multer.middleware';
 
 const router = Router();
 
+router.get('/', storeController.getAllSimpleStoreInformation)
 router.get('/:id/reservations', storeController.findByMonthOrToday);
 router.get('/:id', storeController.getAllStoreInformation);
 router.post('/', upload, storeController.createOne);
