@@ -2,7 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 import { WEEK, WEEK_TYPE } from '../constants';
 import { IOpeningHour } from '../interfaces/store.interface';
 import { storeService } from '../services/store.service';
-import { serverMessage, statusMessage } from '../utils/message.util';
+import { serverMessage, errorName } from '../utils/message.util';
+import { AppError } from '../middlewares/error.middleware';
 
 class StoreController {
   async createOne(req: any, res: Response, next: NextFunction) {
@@ -198,8 +199,7 @@ class StoreController {
       const { month, search, skip } = req.query;
 
       if (!id) {
-        const msg = `${statusMessage.BAD_REQUEST}+${serverMessage.E001}`;
-        throw new Error(msg);
+        throw new AppError(errorName.BAD_REQUEST, serverMessage.E001, true);
       }
 
       let result;

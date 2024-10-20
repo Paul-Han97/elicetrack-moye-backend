@@ -7,8 +7,9 @@ import { StoreDefaultOpeningHour } from '../entities/store-default-opening-hour.
 import { StoreOpeningHourOverride } from '../entities/store-opening-hour-override.entity';
 import { Store } from '../entities/store.entity';
 import { ICreateOne, IDeleteOne } from '../interfaces/store.interface';
+import { AppError } from '../middlewares/error.middleware';
 import { fileUtil } from '../utils/file.util';
-import { statusMessage, serverMessage } from '../utils/message.util';
+import { errorName, serverMessage } from '../utils/message.util';
 import { storeQuery } from '../utils/sql-query.util';
 
 const repository = AppDataSource.getRepository(Store);
@@ -56,8 +57,7 @@ class StoreRepository {
       await queryRunner.commitTransaction();
     } catch (e) {
       await queryRunner.rollbackTransaction();
-      const msg = `${statusMessage.INTERNAL_SERVER_ERROR}+${serverMessage.E005}`;
-      throw new Error(msg);
+      throw new AppError(errorName.INTERNAL_SERVER_ERROR, serverMessage.E005, true);
     } finally {
       await queryRunner.release();
     }
@@ -143,8 +143,7 @@ class StoreRepository {
       await queryRunner.commitTransaction();
     } catch (e) {
       await queryRunner.rollbackTransaction();
-      const msg = `${statusMessage.INTERNAL_SERVER_ERROR}+${serverMessage.E005}`;
-      throw new Error(msg);
+      throw new AppError(errorName.INTERNAL_SERVER_ERROR, serverMessage.E005, true);
     } finally {
       await queryRunner.release();
     }

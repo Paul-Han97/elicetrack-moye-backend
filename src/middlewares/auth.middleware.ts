@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { IGenerate, IVerify } from '../interfaces/token.interface';
-import { serverMessage, statusMessage } from '../utils/message.util';
+import { serverMessage, errorName } from '../utils/message.util';
 import { Token } from '../utils/token.util';
+import { AppError } from './error.middleware';
 
 export async function auth(
   req: Request,
@@ -16,8 +17,7 @@ export async function auth(
     const refresh = req.cookies.Refresh;
 
     if (!access || !refresh) {
-      const msg = `${statusMessage.BAD_REQUEST}+${serverMessage.E001}`;
-      throw new Error(msg);
+      throw new AppError(errorName.BAD_REQUEST, serverMessage.E001, true);
     }
 
     const verifyDto: IVerify = {

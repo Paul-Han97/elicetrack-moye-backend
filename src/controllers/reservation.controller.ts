@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 import { reservationService } from '../services/reservation.service';
-import { serverMessage, statusMessage } from '../utils/message.util';
+import { serverMessage, errorName } from '../utils/message.util';
 import { IRequest, IUpdateState } from '../interfaces/reservation.interface';
 import { getTime, getYmd } from '../utils/date.util';
+import { AppError } from '../middlewares/error.middleware';
 
 class ReservationController {
   async updateState(
@@ -16,8 +17,7 @@ class ReservationController {
       const userId = res.locals.user.id;
 
       if (!id) {
-        const msg = `${statusMessage.BAD_REQUEST}+${serverMessage.E001}`;
-        throw new Error(msg);
+        throw new AppError(errorName.BAD_REQUEST, serverMessage.E001, true);
       }
 
       const updateStateDto: IUpdateState = {
@@ -49,8 +49,7 @@ class ReservationController {
       const timeRegExp = /^[0-9]{2}:[0-9]{2}$/;
 
       if(!timeRegExp.test(startTime) || !timeRegExp.test(endTime)) {
-        const msg = `${statusMessage.BAD_REQUEST}+${serverMessage.E001}`;
-        throw new Error(msg);
+        throw new AppError(errorName.BAD_REQUEST, serverMessage.E001, true);
       }
 
       const requestDto:IRequest = {

@@ -16,6 +16,7 @@ import {
   IFindUserByPhone,
   IStore,
 } from '../interfaces/store.interface';
+import { AppError } from '../middlewares/error.middleware';
 import { imageStoreRepository } from '../repositories/image-store.repository';
 import { openingHourRepository } from '../repositories/opening-hour.repository';
 import { reservationRepository } from '../repositories/reservation.repository';
@@ -23,7 +24,7 @@ import { storeDefaultOpeningHourRepository } from '../repositories/store-default
 import { storeOpeningHourOverrideRepository } from '../repositories/store-opening-hour-override.repository';
 import { storeRepository } from '../repositories/store.repository';
 import { getTime, getYmd } from '../utils/date.util';
-import { serverMessage, statusMessage } from '../utils/message.util';
+import { serverMessage, errorName } from '../utils/message.util';
 
 class StoreService {
   async createOne(params: IStore) {
@@ -128,8 +129,7 @@ class StoreService {
     const store = await storeRepository.findById(params.id);
 
     if (!store) {
-      const msg = `${statusMessage.BAD_REQUEST}+${serverMessage.E001}`;
-      throw new Error(msg);
+      throw new AppError(errorName.BAD_REQUEST, serverMessage.E001, true);
     }
 
     const user = new User();

@@ -11,8 +11,9 @@ import { Store } from '../entities/store.entity';
 import { UserCredential } from '../entities/user-credential.entity';
 import { User } from '../entities/user.entity';
 import { ICreateOne, IDeleteOne, ISignup } from '../interfaces/user.interface';
+import { AppError } from '../middlewares/error.middleware';
 import { fileUtil } from '../utils/file.util';
-import { serverMessage, statusMessage } from '../utils/message.util';
+import { serverMessage, errorName } from '../utils/message.util';
 import { userQuery } from '../utils/sql-query.util';
 
 const repository = AppDataSource.getRepository(User);
@@ -48,8 +49,7 @@ class UserRepository {
       .getOne();
 
     if (!sql) {
-      const message = `${statusMessage.NOT_FOUND}+${serverMessage.E003}`;
-      throw new Error(message);
+      throw new AppError(errorName.NOT_FOUND, serverMessage.E003, true);
     }
 
     return sql;
@@ -81,8 +81,7 @@ class UserRepository {
       .getOne();
 
     if (!sql) {
-      const message = `${statusMessage.NOT_FOUND}+${serverMessage.E004}`;
-      throw new Error(message);
+      throw new AppError(errorName.NOT_FOUND, serverMessage.E004, true);
     }
 
     const result = {
@@ -125,8 +124,7 @@ class UserRepository {
       await queryRunner.commitTransaction();
     } catch (e) {
       await queryRunner.rollbackTransaction();
-      const msg = `${statusMessage.INTERNAL_SERVER_ERROR}+${serverMessage.E005}`;
-      throw new Error(msg);
+      throw new AppError(errorName.INTERNAL_SERVER_ERROR, serverMessage.E005, true);
     } finally {
       await queryRunner.release();
     }
@@ -176,8 +174,7 @@ class UserRepository {
       await queryRunner.commitTransaction();
     } catch (e) {
       await queryRunner.rollbackTransaction();
-      const msg = `${statusMessage.INTERNAL_SERVER_ERROR}+${serverMessage.E005}`;
-      throw new Error(msg);
+      throw new AppError(errorName.INTERNAL_SERVER_ERROR, serverMessage.E005, true);
     } finally {
       await queryRunner.release();
     }

@@ -1,4 +1,4 @@
-export const statusMessage = {
+export const errorName = {
   OK: 'OK',
   CREATED: 'Created',
   ACCEPTED: 'Accepted',
