@@ -49,7 +49,11 @@ class ReservationRepository {
     return await repository.findOneBy({id});
   }
 
-  async updateOne(reservation: Reservation) {
+  async updateState(reservation: Reservation) {
+    return await repository.save(reservation);
+  }
+
+  async createOne(reservation: Reservation) {
     return await repository.save(reservation);
   }
 }

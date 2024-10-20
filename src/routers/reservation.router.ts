@@ -3,6 +3,7 @@ import { reservationController } from '../controllers/reservation.controller';
 
 const router = Router();
 
-router.put('/:id', reservationController.createOne);
+router.post('/', reservationController.createOne);
+router.put('/:id', reservationController.updateState);
 
 export const reservationRouter = router;
