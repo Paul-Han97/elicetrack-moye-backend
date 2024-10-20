@@ -149,6 +149,30 @@
 }
 ```
 
+### 예약 등록
+
+#### `POST /api/reservations`
+
+- **request**
+
+```json
+{
+  "storeId": 1,
+  "description": 2,
+  "count": 4,
+  "startTime": "11:22",
+  "endTime": "11:30"
+}
+```
+
+- **response**
+
+```json
+{
+  "body": "예약 등록이 완료 되었습니다."
+}
+```
+
 ### 하루 예약 조회
 
 #### `GET /api/stores/:id/reservations`
@@ -311,7 +335,7 @@
 }
 ```
 
-### 예약 한 건 수정
+### 예약 상태 수정
 
 #### `PUT /api/reservations/:id`
 

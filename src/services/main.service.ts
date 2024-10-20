@@ -3,7 +3,7 @@ import { config } from '../config';
 import { RESERVATION_TYPE, RESERVATION_TYPE_ID } from '../constants';
 import { ReservationState } from '../entities/reservation-state.entity';
 import { ISendEmail } from '../interfaces/main.interface';
-import { IUpdateOneDTo } from '../interfaces/reservation.interface';
+import { IUpdateState } from '../interfaces/reservation.interface';
 import { reservationRepository } from '../repositories/reservation.repository';
 import { serverMessage, statusMessage } from '../utils/message.util';
 import nodemailer from 'nodemailer';
