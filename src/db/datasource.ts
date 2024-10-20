@@ -1,6 +1,8 @@
 import { DataSource } from 'typeorm';
 import { config } from '../config';
 
+const entityPath = config.server.runtime.environment === 'DEV' ? '**/entities/*.entity.ts' : '**/entities/*.entity.js';
+
 export const AppDataSource = new DataSource({
   type: 'mysql',
   host: config.database.host,
@@ -8,8 +10,7 @@ export const AppDataSource = new DataSource({
   username: config.database.username,
   password: config.database.password,
   database: config.database.name,
-  // entities: ['**/entities/*.entity.js'],
-  entities: ['**/entities/*.entity.{js,ts}'],
+  entities: [entityPath],
   logging: true,
   synchronize: true,
 });
