@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken';
 import { config } from '../config';
 import { IGenerate, IDecodeJwt, IVerify } from '../interfaces/token.interface';
-import { serverMessage, statusMessage } from './message.util';
+import { serverMessage, errorName } from './message.util';
 import { COOKIE_MAX_AGE } from '../constants';
+import { AppError } from '../middlewares/error.middleware';
 
 export class Token {
   private static key = config.jwt.key;
@@ -47,8 +48,7 @@ export class Token {
     const decoded = this.decode(token);
 
     if (type === this.REFRESH && !decoded.isValid) {
-      const msg = `${statusMessage.UNAUTHORIZED}+${serverMessage.E002}`;
-      throw new Error(msg);
+      throw new AppError(errorName.UNAUTHORIZED, serverMessage.E002, true);
     }
 
     return decoded;

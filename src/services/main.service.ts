@@ -5,7 +5,7 @@ import { ReservationState } from '../entities/reservation-state.entity';
 import { ISendEmail } from '../interfaces/main.interface';
 import { IUpdateState } from '../interfaces/reservation.interface';
 import { reservationRepository } from '../repositories/reservation.repository';
-import { serverMessage, statusMessage } from '../utils/message.util';
+import { serverMessage, errorName } from '../utils/message.util';
 import nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 import { fileUtil } from '../utils/file.util';

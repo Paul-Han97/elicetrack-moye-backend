@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { COOKIE_MAX_AGE } from '../constants';
 import { userService } from '../services/user.service';
-import { serverMessage, statusMessage } from '../utils/message.util';
+import { serverMessage, errorName } from '../utils/message.util';
 import { Token } from '../utils/token.util';
 import { ISendEmail } from '../interfaces/main.interface';
 import { mainService } from '../services/main.service';
@@ -57,8 +57,7 @@ class MainController {
       const { subject, receiver, storeName, storeStartTime, userName, content } = req.body;
 
       // if( !subject || !receiver || !storeName || !storeStartTime || !userName) {
-      //   const msg = `${statusMessage.BAD_REQUEST}+${serverMessage.E001}`
-      //   throw new Error(msg);
+      //   throw new AppError(errorName.BAD_REQUEST, serverMessage.E001, true);
       // }
 
       const sendEmailDto: ISendEmail = {

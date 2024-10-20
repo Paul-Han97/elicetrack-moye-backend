@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import { userService } from '../services/user.service';
 import { IUser } from '../interfaces/user.interface';
-import { serverMessage, statusMessage } from '../utils/message.util';
+import { serverMessage, errorName } from '../utils/message.util';
 import { STATIC_PATH, USER_PATH } from '../constants';
 import { fileUtil } from '../utils/file.util';
+import { AppError } from '../middlewares/error.middleware';
 
 class UserController {
   async findByEmail(
@@ -60,14 +61,12 @@ class UserController {
           const file = fileUtil.join(dir, files[i].filename);
           fileUtil.remove(file);
 
-          const msg = `${statusMessage.BAD_REQUEST}+${serverMessage.E001}`;
-          throw new Error(msg);
+          throw new AppError(errorName.BAD_REQUEST, serverMessage.E001, true);
         }
       }
 
       if (files.length !== 1) {
-        const msg = `${statusMessage.BAD_REQUEST}+${serverMessage.E001}`;
-        throw new Error(msg);
+        throw new AppError(errorName.BAD_REQUEST, serverMessage.E001, true);
       }
 
       const { id } = req.params;

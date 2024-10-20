@@ -2,19 +2,19 @@ import { RESERVATION_TYPE, RESERVATION_TYPE_ID } from '../constants';
 import { ReservationState } from '../entities/reservation-state.entity';
 import { Reservation } from '../entities/reservation.entity';
 import { IRequest, IUpdateState } from '../interfaces/reservation.interface';
+import { AppError } from '../middlewares/error.middleware';
 import { reservationRepository } from '../repositories/reservation.repository';
 import { storeRepository } from '../repositories/store.repository';
 import { userRepository } from '../repositories/user.repository';
 import { getTime } from '../utils/date.util';
-import { serverMessage, statusMessage } from '../utils/message.util';
+import { serverMessage, errorName } from '../utils/message.util';
 
 class ReservationService {
   async updateState(updateStateDto: IUpdateState) {
     const reservation = await reservationRepository.findById(updateStateDto.id);
 
     if (!reservation) {
-      const msg = `${statusMessage.BAD_REQUEST}+${serverMessage.E001}`;
-      throw new Error(msg);
+      throw new AppError(errorName.BAD_REQUEST, serverMessage.E001, true);
     }
 
     const reservationStateType = <
@@ -40,13 +40,11 @@ class ReservationService {
     const user = await userRepository.findById(requestDto.userId);
 
     if(!user) {
-      const msg = `${statusMessage.NOT_FOUND}+${serverMessage.E008}`
-      throw new Error(msg);
+      throw new AppError(errorName.NOT_FOUND, serverMessage.E008, true);
     }
 
     if(!store) {
-      const msg = `${statusMessage.NOT_FOUND}+${serverMessage.E008}`
-      throw new Error(msg);
+      throw new AppError(errorName.NOT_FOUND, serverMessage.E008, true);
     }
     
     const reservationState = new ReservationState();

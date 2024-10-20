@@ -13,10 +13,11 @@ import {
   ISignup,
   IUser,
 } from '../interfaces/user.interface';
+import { AppError } from '../middlewares/error.middleware';
 import { imageUserRepository } from '../repositories/image-user.repository';
 import { userRepository } from '../repositories/user.repository';
 import { Encrypt } from '../utils/encrypt.util';
-import { serverMessage, statusMessage } from '../utils/message.util';
+import { serverMessage, errorName } from '../utils/message.util';
 import { Token } from '../utils/token.util';
 
 class UserService {
@@ -46,8 +47,7 @@ class UserService {
     const isMatches = Encrypt.matches(password, user.password);
 
     if (!isMatches) {
-      const msg = `${statusMessage.NOT_FOUND}+${serverMessage.E004}`;
-      throw new Error(msg);
+      throw new AppError(errorName.NOT_FOUND, serverMessage.E004, true);
     }
 
     const payload: IGenerate = {
@@ -74,8 +74,7 @@ class UserService {
     const hasUser = await userRepository.findByEmail(email);
 
     if (hasUser) {
-      const msg = `${statusMessage.BAD_REQUEST}+${serverMessage.E006}`;
-      throw new Error(msg);
+      throw new AppError(errorName.BAD_REQUEST, serverMessage.E006, true);
     }
 
     const user = new User();
@@ -113,8 +112,7 @@ class UserService {
     const user = await userRepository.findById(userDto.id);
 
     if (!user) {
-      const msg = `${statusMessage.NOT_FOUND}+${serverMessage.E003}`;
-      throw new Error(msg);
+      throw new AppError(errorName.NOT_FOUND, serverMessage.E003, true);
     }
 
     const createOneDto = <ICreateOne>{};
