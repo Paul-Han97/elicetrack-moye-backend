@@ -47,26 +47,19 @@ class MainController {
     req: Request<
       {},
       {},
-      {receiver: string; subject: string; storeName:string; storeStartTime:string; userName:string, content:string},
-      {  }
+      { receiver: string; subject: string; content: string },
+      {}
     >,
     res: Response,
     next: NextFunction
   ) {
     try {
-      const { subject, receiver, storeName, storeStartTime, userName, content } = req.body;
-
-      // if( !subject || !receiver || !storeName || !storeStartTime || !userName) {
-      //   throw new AppError(errorName.BAD_REQUEST, serverMessage.E001, true);
-      // }
+      const { subject, receiver, content } = req.body;
 
       const sendEmailDto: ISendEmail = {
         receiver,
         subject,
-        storeName,
-        storeStartTime,
-        userName,
-        content
+        content,
       };
 
       const result = mainService.sendEmail(sendEmailDto);
