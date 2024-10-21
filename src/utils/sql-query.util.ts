@@ -16,6 +16,7 @@ export const reservationQuery = {
 
   findTodayReservationByStoreId: 
   `SELECT A.id
+         ,B.email email
          ,B.name name
          ,A.count count
          ,DATE_FORMAT(A.start_time, '%H:%i') startTime
