@@ -1,73 +1,70 @@
 import { NextFunction, Request, Response } from 'express';
-import { IGenerate, IVerify } from '../interfaces/token.interface';
+import { COOKIE_MAX_AGE } from '../constants';
 import { userService } from '../services/user.service';
+import { serverMessage, errorName } from '../utils/message.util';
 import { Token } from '../utils/token.util';
-import { imageService } from '../services/image.service';
-import { serverMessage, statusMessage } from '../utils/message.util';
+import { ISendEmail } from '../interfaces/main.interface';
+import { mainService } from '../services/main.service';
 
 class MainController {
   async login(req: Request, res: Response, next: NextFunction) {
     try {
       const { email, password } = req.body;
 
-      const result = await userService.loadUserByEmail(email, password);
+      const { access, refresh } = await userService.loadUserByEmail(
+        email,
+        password
+      );
 
-      res.status(200).send({ body: result });
+      res.cookie(Token.ACCESS, access, {
+        httpOnly: true,
+        maxAge: COOKIE_MAX_AGE,
+      });
+
+      res.cookie(Token.REFRESH, refresh, {
+        httpOnly: true,
+        maxAge: COOKIE_MAX_AGE,
+      });
+
+      res.status(200).send({ body: serverMessage.S004 });
     } catch (e) {
       next(e);
     }
   }
 
-  async refresh(req: Request, res: Response, next: NextFunction) {
+  async logout(req: Request, res: Response, next: NextFunction) {
     try {
-      const authorization = req.headers.authorization;
+      res.clearCookie(Token.ACCESS);
+      res.clearCookie(Token.REFRESH);
 
-      const header: IVerify = {
-        type: Token.REFRESH,
-        authorization,
-      };
-
-      const decoded = Token.verify(header);
-
-      const payload: IGenerate = {
-        type: Token.ACCESS,
-        id: decoded.id,
-        role: decoded.role,
-      };
-
-      const result = {
-        access: Token.generate(payload),
-      };
-
-      res.status(200).send({ body: result });
+      res.status(200).send({ body: serverMessage.S005 });
     } catch (e) {
       next(e);
     }
   }
 
-  async uploads(req: any, res: Response, next: NextFunction) {
+  async sendEmail(
+    req: Request<
+      {},
+      {},
+      { receiver: string; subject: string; content: string },
+      {}
+    >,
+    res: Response,
+    next: NextFunction
+  ) {
     try {
-      const userId = res.locals.user.id;
-      const { storeId } = req.params;
+      const { subject, receiver, content } = req.body;
 
-      const files = req.files;
-      
-      if(files.length === 0) {
-        const msg = `${statusMessage.BAD_REQUEST}+${serverMessage.E001}`
-        throw new Error(msg);
-      }
+      const sendEmailDto: ISendEmail = {
+        receiver,
+        subject,
+        content,
+      };
 
-      const filenames: string[] = files.map((data: { filename: string }) => {
-        return data.filename;
-      });
+      const result = mainService.sendEmail(sendEmailDto);
 
-      const result = await imageService.createOne({
-        userId,
-        storeId,
-        filenames,
-      });
-
-      res.status(201).send({ body: result });
+      res.status(200).send({ body: result });
     } catch (e) {
       next(e);
     }

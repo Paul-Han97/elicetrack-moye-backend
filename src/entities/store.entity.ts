@@ -18,7 +18,7 @@ export class Store extends Common {
   @Column('varchar', { name: 'business_name' })
   businessName: string;
 
-  @Column('varchar')
+  @Column('varchar', { default: '' })
   description: string;
 
   @Column('varchar')

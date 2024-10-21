@@ -34,11 +34,7 @@ class ReservationRepository {
     const rightSideLike = `${name}%`;
 
     const sql = reservationQuery.findUserByName;
-
-    const leftSide = await repository.query(sql, [id, leftSideLike]);
-    const rightSide = await repository.query(sql, [id, rightSideLike]);
-
-    return [...leftSide, ...rightSide];
+    return await repository.query(sql, [id, leftSideLike, rightSideLike]);
   }
 
   async findUserByPhone({ id, phone }: IFindUserByPhone) {
@@ -46,18 +42,18 @@ class ReservationRepository {
     const rightSideLike = `${phone}%`;
 
     const sql = reservationQuery.findUserByPhone;
-
-    const leftSide = await repository.query(sql, [id, leftSideLike]);
-    const rightSide = await repository.query(sql, [id, rightSideLike]);
-
-    return [...leftSide, ...rightSide];
+    return await repository.query(sql, [id, leftSideLike, rightSideLike]);
   }
 
   async findById(id:number) {
     return await repository.findOneBy({id});
   }
 
-  async updateOne(reservation: Reservation) {
+  async updateState(reservation: Reservation) {
+    return await repository.save(reservation);
+  }
+
+  async createOne(reservation: Reservation) {
     return await repository.save(reservation);
   }
 }

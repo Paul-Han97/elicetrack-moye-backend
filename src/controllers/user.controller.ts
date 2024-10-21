@@ -1,6 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import { userService } from '../services/user.service';
 import { IUser } from '../interfaces/user.interface';
+import { serverMessage, errorName } from '../utils/message.util';
+import { STATIC_PATH, USER_PATH } from '../constants';
+import { fileUtil } from '../utils/file.util';
+import { AppError } from '../middlewares/error.middleware';
 
 class UserController {
   async findByEmail(
@@ -20,12 +24,12 @@ class UserController {
   }
 
   async findByIdWithRole(
-    req: Request<{ id: number }>,
+    req: any,
     res: Response,
     next: NextFunction
   ) {
     try {
-      const { id } = req.params;
+      const id = Number(req.params.id);
 
       const result = await userService.findByIdWithRole(id);
 
@@ -40,6 +44,39 @@ class UserController {
       const userDto: IUser = req.body;
 
       const result = await userService.signup(userDto);
+
+      res.status(201).send({ body: result });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async updateImage(req: any, res: Response, next: NextFunction) {
+    try {
+      const files = req.files;
+
+      if (files.length >= 2) {
+        for (let i = 0; i < files.length; i++) {
+          const dir = fileUtil.join(fileUtil.cwd, USER_PATH);
+          const file = fileUtil.join(dir, files[i].filename);
+          fileUtil.remove(file);
+
+          throw new AppError(errorName.BAD_REQUEST, serverMessage.E001, true);
+        }
+      }
+
+      if (files.length !== 1) {
+        throw new AppError(errorName.BAD_REQUEST, serverMessage.E001, true);
+      }
+
+      const { id } = req.params;
+
+      const userDto = {
+        id,
+        imageUrl: files[0].filename
+      }
+
+      const result = await userService.deleteAndInsertImage(<IUser>userDto);
 
       res.status(201).send({ body: result });
     } catch (e) {

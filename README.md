@@ -2,12 +2,11 @@
 
 ## 명령어
 
-| 명령어          | 실행 명령                               |
-| :-------------- | :-------------------------------------- |
-| npm run install | npm install --production                |
-| npm run start   | node dist/index.js                      |
-| npm run build   | tsc --project tsconfig.json             |
-| npm run dev     | nodemon --exec \"ts-node\" src/index.ts |
+| 명령어        | 실행 명령                                  |
+| :------------ | :----------------------------------------- |
+| npm run start | pm2 start dist/index.js --name back-server |
+| npm run build | tsc --project tsconfig.json                |
+| npm run dev   | nodemon --exec \"ts-node\" src/index.ts    |
 
 ## error middleware
 
@@ -21,9 +20,75 @@
 
 ## `HOST localhost:5000`
 
-### Email로 검색
+### 사용자 id로 검색
 
-#### `GET /users?email="ph@elice.com"`
+#### `GET /api/users/:id`
+
+```json
+{
+  "body": {
+    "email": "lmh@elice.com",
+    "name": "엘리스",
+    "phone": "01033334444",
+    "role": "ROLE_MANAGER",
+    "imageUrl": "static/users/1ef8dd40-8f93-6e30-8108-b882deb6587c.jpg",
+    "stores": [
+      {
+        "id": 3,
+        "registeredUser": "1",
+        "registeredDate": "2024-10-19T04:59:00.824Z",
+        "updatedUser": "1",
+        "updatedDate": "2024-10-19T05:00:56.445Z",
+        "businessRegistrationNumber": "123-10-12345",
+        "businessName": "10시 15분 이후(상호명)",
+        "description": "test",
+        "name": "10시 15분 이후 매장 이름",
+        "address": "서울특별시 송파구 석촌동 163-1",
+        "contact": "02-000-2222",
+        "seatCount": 6,
+        "tableCount": 12,
+        "imageStore": [
+          {
+            "id": 1,
+            "registeredUser": "1",
+            "registeredDate": "2024-10-19T04:59:00.837Z",
+            "updatedUser": "1",
+            "updatedDate": "2024-10-19T04:59:00.837Z",
+            "isPrimary": false,
+            "image": [
+              {
+                "id": 26,
+                "registeredUser": "1",
+                "registeredDate": "2024-10-19T04:59:00.833Z",
+                "updatedUser": "1",
+                "updatedDate": "2024-10-19T04:59:00.833Z",
+                "url": "static/stores/1ef8dd6d-af9b-6390-8fd0-1400c56dd1c0.jpg"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "reservations": [
+      {
+        "id": 3,
+        "registeredUser": "ROLE_ADMIN",
+        "registeredDate": "2024-10-18T07:46:22.612Z",
+        "updatedUser": "ROLE_ADMIN",
+        "updatedDate": "2024-10-18T07:46:22.612Z",
+        "description": "예약3",
+        "count": 5,
+        "startTime": "2024-11-05T06:00:00.000Z",
+        "endTime": "2024-11-05T06:50:09.000Z"
+      }
+    ]
+  }
+}
+```
+
+### 사용자 email로 검색
+
+#### `GET /api/users?email="ph@elice.com"`
 
 - **response**
 
@@ -39,7 +104,7 @@
 
 ### 로그인
 
-#### `POST /login`
+#### `POST /api/login`
 
 - **request**
 
@@ -63,7 +128,7 @@
 
 ### 회원가입
 
-#### `POST /users`
+#### `POST /api/users`
 
 - **request**
 
@@ -84,18 +149,33 @@
 }
 ```
 
-### 하루 예약 조회
+### 예약 등록
 
-#### `GET /stores/:id/reservations`
+#### `POST /api/reservations`
 
-- **request header**
+- **request**
 
 ```json
 {
-  // authorization = {Access Token}
-  "authorization": "Bearer eyJhbGciOiJIUz...oOnz2pX1x6bb-C6A"
+  "storeId": 1,
+  "description": 2,
+  "count": 4,
+  "startTime": "11:22",
+  "endTime": "11:30"
 }
 ```
+
+- **response**
+
+```json
+{
+  "body": "예약 등록이 완료 되었습니다."
+}
+```
+
+### 하루 예약 조회
+
+#### `GET /api/stores/:id/reservations`
 
 - **response**
 
@@ -107,6 +187,7 @@
     [
       {
         "id": 1,
+        "email": "ph@elice.com",
         "name": "엘리스",
         "count": 2,
         "startTime": "10:00",
@@ -116,6 +197,7 @@
       },
       {
         "id": 2,
+        "email": "test@elice.com",
         "name": "예약자1",
         "count": 2,
         "startTime": "13:00",
@@ -125,6 +207,7 @@
       },
       {
         "id": 3,
+        "email": "abc@elice.com",
         "name": "예약자2",
         "count": 2,
         "startTime": "16:00",
@@ -134,6 +217,7 @@
       },
       {
         "id": 4,
+        "email": "b123aaa@elice.com",
         "name": "예약자3",
         "count": 4,
         "startTime": "18:00",
@@ -148,16 +232,7 @@
 
 ### 한 달 예약 조회 - 검색
 
-#### `GET /stores/:id/reservations?skip=0`
-
-- **request header**
-
-```json
-{
-  // authorization = {Access Token}
-  "authorization": "Bearer eyJhbGciOiJIUz...oOnz2pX1x6bb-C6A"
-}
-```
+#### `GET /api/stores/:id/reservations?skip=0`
 
 - **response**
 
@@ -220,16 +295,7 @@
 
 ### 한 달 예약 조회 - 번호 검색
 
-#### `GET /stores/:id/reservations?search=0103333`
-
-- **request header**
-
-```json
-{
-  // authorization = {Access Token}
-  "authorization": "Bearer eyJhbGciOiJIUz...oOnz2pX1x6bb-C6A"
-}
-```
+#### `GET /api/stores/:id/reservations?search=0103333`
 
 - **response**
 
@@ -252,16 +318,7 @@
 
 ### 한 달 예약 조회 - 이름 검색
 
-#### `GET /reservations/1/stores?search=리스`
-
-- **request header**
-
-```json
-{
-  // authorization = {Access Token}
-  "authorization": "Bearer eyJhbGciOiJIUz...oOnz2pX1x6bb-C6A"
-}
-```
+#### `GET /api/reservations/1/stores?search=리스`
 
 - **response**
 
@@ -282,18 +339,9 @@
 }
 ```
 
-### 예약 한 건 수정
+### 예약 상태 수정
 
-#### `PUT /reservations/:id`
-
-- **request header**
-
-```json
-{
-  // authorization = {Access Token}
-  "authorization": "Bearer eyJhbGciOiJIUz...oOnz2pX1x6bb-C6A"
-}
-```
+#### `PUT /api/reservations/:id`
 
 - **request**
 
@@ -328,16 +376,7 @@
 
 ### 가게 등록
 
-#### `POST /stores`
-
-- **request header**
-
-```json
-{
-  // authorization = {Access Token}
-  "authorization": "Bearer eyJhbGciOiJIUz...oOnz2pX1x6bb-C6A"
-}
-```
+#### `POST /api/stores`
 
 - **request**
 
@@ -345,12 +384,12 @@
 {
   "businessRegistrationNumber": "123-10-12345",
   "businessName": "테스트(상호명)",
-  "description": "테스트 매장",
   "name": "테스트 매장 이름",
   "address": "서울특별시 송파구 석촌동 163-1",
   "contact": "02-000-2222",
   "totalSeats": 6,
   "numberPerTable": 12,
+  "files": "{JPG FILE}",
   "openingHour": [
     {
       "type": "평일",
@@ -374,15 +413,7 @@
       "openFrom": "11:00",
       "closeTo": "12:00"
     }
-  ],
-  "closedDay": [
-    "2024-01-25",
-    "2024-03-23",
-    "2024-11-30",
-    "2024-05-23",
-    "2024-10-30"
-  ],
-  "dayOfWeekDay": [1, 6, 7]
+  ]
 }
 ```
 
@@ -394,20 +425,108 @@
 }
 ```
 
-### 가게 조회
+### 가게 모든 정보 간단 조회
 
-#### `GET /stores/:id`
+#### `GET /api/stores/?skip=0`
 
-- **request header**
+- **request Query String**
 
 ```json
 {
-  // authorization = {Access Token}
-  "authorization": "Bearer eyJhbGciOiJIUz...oOnz2pX1x6bb-C6A"
+  // skip 생략시 default 값 0
+  "skip": 2
 }
 ```
 
-- **response header**
+- **response**
+
+```json
+{
+  "body": [
+    {
+      "id": 6,
+      "name": "10시 15분 이후 매장 이름",
+      "contact": "02-000-2222",
+      "seatCount": 6,
+      "tableCount": 12,
+      "weekendOpeningTime": "13:00:00",
+      "weekendCloseingTime": "20:00:00",
+      "weekendStartBreakTime": "16:00:00",
+      "weekendEndBreakTime": "17:00:00",
+      "weekdayOpeningTime": "09:00:00",
+      "weekdayCloseingTime": "20:00:00",
+      "weekdayStartBreakTime": "13:00:00",
+      "weekdayEndBreakTime": "14:00:00"
+    },
+    {
+      "id": 7,
+      "name": "10시 15분 이후 매장 이름",
+      "contact": "02-000-2222",
+      "seatCount": 6,
+      "tableCount": 12,
+      "weekendOpeningTime": "13:00:00",
+      "weekendCloseingTime": "20:00:00",
+      "weekendStartBreakTime": "16:00:00",
+      "weekendEndBreakTime": "17:00:00",
+      "weekdayOpeningTime": "09:00:00",
+      "weekdayCloseingTime": "20:00:00",
+      "weekdayStartBreakTime": "13:00:00",
+      "weekdayEndBreakTime": "14:00:00"
+    },
+    {
+      "id": 8,
+      "name": "10시 15분 이후 매장 이름",
+      "contact": "02-000-2222",
+      "seatCount": 6,
+      "tableCount": 12,
+      "weekendOpeningTime": "13:00:00",
+      "weekendCloseingTime": "20:00:00",
+      "weekendStartBreakTime": "16:00:00",
+      "weekendEndBreakTime": "17:00:00",
+      "weekdayOpeningTime": "09:00:00",
+      "weekdayCloseingTime": "20:00:00",
+      "weekdayStartBreakTime": "13:00:00",
+      "weekdayEndBreakTime": "14:00:00"
+    },
+    {
+      "id": 9,
+      "name": "10시 15분 이후 매장 이름",
+      "contact": "02-000-2222",
+      "seatCount": 6,
+      "tableCount": 12,
+      "weekendOpeningTime": "13:00:00",
+      "weekendCloseingTime": "20:00:00",
+      "weekendStartBreakTime": "16:00:00",
+      "weekendEndBreakTime": "17:00:00",
+      "weekdayOpeningTime": "09:00:00",
+      "weekdayCloseingTime": "20:00:00",
+      "weekdayStartBreakTime": "13:00:00",
+      "weekdayEndBreakTime": "14:00:00"
+    },
+    {
+      "id": 10,
+      "name": "10시 15분 이후 매장 이름",
+      "contact": "02-000-2222",
+      "seatCount": 6,
+      "tableCount": 12,
+      "weekendOpeningTime": "13:00:00",
+      "weekendCloseingTime": "20:00:00",
+      "weekendStartBreakTime": "16:00:00",
+      "weekendEndBreakTime": "17:00:00",
+      "weekdayOpeningTime": "09:00:00",
+      "weekdayCloseingTime": "20:00:00",
+      "weekdayStartBreakTime": "13:00:00",
+      "weekdayEndBreakTime": "14:00:00"
+    }
+  ]
+}
+```
+
+### 가게 모든 정보 조회
+
+#### `GET /api/stores/:id`
+
+- **response**
 
 ```json
 {
@@ -466,17 +585,63 @@
 }
 ```
 
-### 이미지 등록
+### 가게 수정
 
-#### `POST /uploads/:storeId`
+#### `PUT /api/stores/:id`
 
 - **request header**
 
 ```json
 {
-  // authorization = {Access Token}
-  "authorization": "Bearer eyJhbGciOiJIUz...oOnz2pX1x6bb-C6A",
   "Content-Type": "multipart/form-data"
+}
+```
+
+- **request**
+
+```json
+{
+  "businessRegistrationNumber": "123-10-12345",
+  "businessName": "테스트(상호명)",
+  "description": "테스트 매장",
+  "name": "테스트 매장 이름",
+  "address": "서울특별시 송파구 석촌동 163-1",
+  "contact": "02-000-2222",
+  "totalSeats": 6,
+  "numberPerTable": 12,
+  "files": "{JPG FILE}",
+  "openingHour": [
+    {
+      "type": "평일",
+      "openFrom": "09:30",
+      "closeTo": "18:30"
+    },
+    {
+      "type": "주말",
+      "openFrom": "10:00",
+      "closeTo": "13:00"
+    }
+  ],
+  "breakTime": [
+    {
+      "type": "평일",
+      "openFrom": "13:30",
+      "closeTo": "14:30"
+    },
+    {
+      "type": "주말",
+      "openFrom": "11:00",
+      "closeTo": "12:00"
+    }
+  ],
+  "closedDay": [
+    "2024-01-25",
+    "2024-03-23",
+    "2024-11-30",
+    "2024-05-23",
+    "2024-10-30"
+  ],
+  "dayOfWeekDay": [1, 6, 7]
 }
 ```
 
@@ -484,6 +649,53 @@
 
 ```json
 {
-  "body": "가게 등록이 완료 되었습니다."
+  "body": "가게 수정이 완료 되었습니다."
+}
+```
+
+### 이메일 전송
+
+#### `POST /api/send-email`
+
+- **request**
+
+```json
+{
+  "subject": "제목 테스트 작성",
+  "receiver": "ph@gmail.com",
+  "userName": "김유선",
+  "storeName": "엘리스",
+  "storeStartTime": "16:00",
+  "content": "content"
+}
+```
+
+### 프로필 이미지 수정
+
+#### `PUT /api/users/:id`
+
+- **request header**
+
+```json
+{
+  "Content-Type": "multipart/form-data"
+}
+```
+
+- **request**
+
+```json
+{
+  "files": "{JPG FILE}"
+}
+```
+
+- **response**
+
+```json
+{
+  "body": {
+    "message": "프로필 사진 등록이 완료 되었습니다."
+  }
 }
 ```

@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
-import { IVerify } from '../interfaces/token.interface';
-import { serverMessage, statusMessage } from '../utils/message.util';
+import { IGenerate, IVerify } from '../interfaces/token.interface';
+import { serverMessage, errorName } from '../utils/message.util';
 import { Token } from '../utils/token.util';
+import { AppError } from './error.middleware';
 
 export async function auth(
   req: Request,
@@ -12,24 +13,45 @@ export async function auth(
   next: NextFunction
 ) {
   try {
-    const authorization = req.headers.authorization;
+    const access = req.cookies.Access;
+    const refresh = req.cookies.Refresh;
 
-    const verifyParam: IVerify = {
-      type: Token.ACCESS,
-      authorization,
-    };
-
-    const decoded = Token.verify(verifyParam);
-
-    if (!decoded) {
-      const message = `${statusMessage.UNAUTHORIZED}+${serverMessage.E002}`;
-      throw new Error(message);
+    if (!access || !refresh) {
+      throw new AppError(errorName.BAD_REQUEST, serverMessage.E001, true);
     }
 
-    const { id, role } = decoded;
+    const verifyDto: IVerify = {
+      type: Token.ACCESS,
+      token: access,
+    };
 
+    const decodedAccess = Token.verify(verifyDto);
+
+    if (decodedAccess.isValid) {
+      const { id, role } = decodedAccess;
+      res.locals.user = { id, role };
+      next();
+      return;
+    }
+
+    // refresh 인증 이후 access 발급 로직
+    verifyDto.type = Token.REFRESH;
+    verifyDto.token = refresh;
+
+    const decodedRefresh = Token.verify(verifyDto);
+
+    const generateDto: IGenerate = {
+      type: Token.REFRESH,
+      id: decodedRefresh.id,
+      role: decodedRefresh.role,
+    };
+
+    const newAccess = Token.generate(generateDto);
+
+    const { id, role } = decodedRefresh;
     res.locals.user = { id, role };
 
+    res.cookie(Token.ACCESS, newAccess);
     next();
   } catch (e) {
     next(e);
