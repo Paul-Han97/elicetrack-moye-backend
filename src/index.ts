@@ -1,4 +1,4 @@
-import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import express from 'express';
 import { config } from './config';
 import { dbConnect } from './db/datasource';
@@ -8,19 +8,11 @@ import { mainRouter } from './routers/main.router';
 import { reservationRouter } from './routers/reservation.router';
 import { storeRouter } from './routers/store.router';
 import { userRouter } from './routers/user.router';
-import cookieParser from 'cookie-parser';
-
 
 const PORT = config.server.port;
 const BASE_URL = config.baseUrl;
 
 const app = express();
-
-app.use(
-  cors({
-    origin: '*',
-  })
-);
 
 dbConnect();
 
@@ -38,5 +30,5 @@ app.use(`${BASE_URL}/reservations`, auth, reservationRouter);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`서버가 ${PORT}번 에서 정상적으로 실행 되었습니다.`)
+  console.log(`서버가 ${PORT}번 에서 정상적으로 실행 되었습니다.`);
 });
