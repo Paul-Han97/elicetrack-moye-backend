@@ -24,12 +24,12 @@ class UserController {
   }
 
   async findByIdWithRole(
-    req: Request<{ id: number }>,
+    req: any,
     res: Response,
     next: NextFunction
   ) {
     try {
-      const { id } = req.params;
+      const id = Number(req.params.id);
 
       const result = await userService.findByIdWithRole(id);
 
