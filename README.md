@@ -187,6 +187,7 @@
     [
       {
         "id": 1,
+        "email": "ph@elice.com",
         "name": "엘리스",
         "count": 2,
         "startTime": "10:00",
@@ -196,6 +197,7 @@
       },
       {
         "id": 2,
+        "email": "test@elice.com",
         "name": "예약자1",
         "count": 2,
         "startTime": "13:00",
@@ -205,6 +207,7 @@
       },
       {
         "id": 3,
+        "email": "abc@elice.com",
         "name": "예약자2",
         "count": 2,
         "startTime": "16:00",
@@ -214,6 +217,7 @@
       },
       {
         "id": 4,
+        "email": "b123aaa@elice.com",
         "name": "예약자3",
         "count": 4,
         "startTime": "18:00",
