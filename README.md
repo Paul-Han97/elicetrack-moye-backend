@@ -11,9 +11,13 @@
 ## error middleware
 
 ```ts
-(req: Request, res: Response, next: NextFunction) => {
-  throw new Error(`${statusMessage.BAD_REQUEST}+${serverMessage.E001}`);
-};
+/**
+ * Extends the built-in error class
+ * @param {string} name
+ * @param {string} message 
+ * @param {boolean} isOperational 
+ */
+throw new AppError(errorName.BAD_REQUEST, serverMessage.E001, true);
 ```
 
 # API 명세서
